@@ -1,0 +1,211 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\teste.domain\\cnpjtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|solutionrelative:teste.domain\\cnpjtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\valueobjects\\cnpj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\valueobjects\\cnpj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\teste.domain\\cpftest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|solutionrelative:teste.domain\\cpftest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\teste.domain\\documenttest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|solutionrelative:teste.domain\\documenttest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\valueobjects\\documento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\valueobjects\\documento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\valueobjects\\cpf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\valueobjects\\cpf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\teste.domain\\customertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{704301A1-6C63-4A28-92C7-2FCC54D4C05E}|Teste.Domain\\Test.Domain.csproj|solutionrelative:teste.domain\\customertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\entities\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\entities\\estoque.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\estoque.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|c:\\users\\luana\\documents\\tcc\\gerenciamentodevendas\\domain\\entities\\venda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A31C9669-13A9-4742-B2A3-BB3B58695C5C}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\venda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CNPJTest.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CNPJTest.cs",
+              "RelativeDocumentMoniker": "Teste.Domain\\CNPJTest.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CNPJTest.cs",
+              "RelativeToolTip": "Teste.Domain\\CNPJTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:11:05.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CPFTest.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CPFTest.cs",
+              "RelativeDocumentMoniker": "Teste.Domain\\CPFTest.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CPFTest.cs",
+              "RelativeToolTip": "Teste.Domain\\CPFTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:10:34.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CNPJ.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\CNPJ.cs",
+              "RelativeDocumentMoniker": "Domain\\ValueObjects\\CNPJ.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\CNPJ.cs",
+              "RelativeToolTip": "Domain\\ValueObjects\\CNPJ.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:09:22.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CPF.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\CPF.cs",
+              "RelativeDocumentMoniker": "Domain\\ValueObjects\\CPF.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\CPF.cs",
+              "RelativeToolTip": "Domain\\ValueObjects\\CPF.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T00:09:14.661Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DocumentTest.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\DocumentTest.cs",
+              "RelativeDocumentMoniker": "Teste.Domain\\DocumentTest.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\DocumentTest.cs",
+              "RelativeToolTip": "Teste.Domain\\DocumentTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:55:32.138Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CustomerTest.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CustomerTest.cs",
+              "RelativeDocumentMoniker": "Teste.Domain\\CustomerTest.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Teste.Domain\\CustomerTest.cs",
+              "RelativeToolTip": "Teste.Domain\\CustomerTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:33:27.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Estoque.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Estoque.cs",
+              "RelativeDocumentMoniker": "Domain\\Entities\\Estoque.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Estoque.cs",
+              "RelativeToolTip": "Domain\\Entities\\Estoque.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:26:13.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Venda.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Venda.cs",
+              "RelativeDocumentMoniker": "Domain\\Entities\\Venda.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Venda.cs",
+              "RelativeToolTip": "Domain\\Entities\\Venda.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:23:57.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Documento.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\Documento.cs",
+              "RelativeDocumentMoniker": "Domain\\ValueObjects\\Documento.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\ValueObjects\\Documento.cs",
+              "RelativeToolTip": "Domain\\ValueObjects\\Documento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:23:51.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Cliente.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Cliente.cs",
+              "RelativeDocumentMoniker": "Domain\\Entities\\Cliente.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Cliente.cs",
+              "RelativeToolTip": "Domain\\Entities\\Cliente.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:23:46.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Produto.cs",
+              "DocumentMoniker": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Produto.cs",
+              "RelativeDocumentMoniker": "Domain\\Entities\\Produto.cs",
+              "ToolTip": "C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas\\Domain\\Entities\\Produto.cs",
+              "RelativeToolTip": "Domain\\Entities\\Produto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-13T23:21:03.187Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
