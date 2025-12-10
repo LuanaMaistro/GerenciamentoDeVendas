@@ -5,36 +5,40 @@ namespace Test.Domain
     public class CustomerTest
     {
         [Fact]
-        public void AtivaInativaCliente_QuandoAtivo_InativoTrue()
+        public void Inativa_QuandoChamado_InativoTrue()
         {
-            //Arrange
+            // Arrange
             var cliente = new Cliente();
 
-            //Act
-            cliente.AtivaInativa();
+            // Act
+            cliente.Inativa();
 
-            //Assert
+            // Assert
             Assert.True(cliente.Inativo);
-
-
         }
 
         [Fact]
-
-        //Quando o cliente era inativo e agora vai ficar ativo, quero a flag de inativo false
-        public void AtivaInativaCliente_QuandoInativo_InativoFalse()
+        public void Ativa_QuandoChamado_InativoFalse()
         {
-            //Arrange
+            // Arrange
             var cliente = new Cliente();
-            cliente.AtivaInativa();
+            cliente.Inativa(); // Primeiro inativa
 
-            //Act
-            cliente.AtivaInativa();
+            // Act
+            cliente.Ativa(); // Depois ativa
 
-            //Assert
+            // Assert
             Assert.False(cliente.Inativo);
+        }
 
+        [Fact]
+        public void Cliente_PorPadrao_NaoEstaInativo()
+        {
+            // Arrange & Act
+            var cliente = new Cliente();
 
+            // Assert
+            Assert.False(cliente.Inativo);
         }
     }
 }
