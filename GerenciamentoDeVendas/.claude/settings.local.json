@@ -3,7 +3,8 @@
     "allow": [
       "Bash(tree:*)",
       "Bash(dotnet test:*)",
-      "Bash(cmd.exe /c \"cd /d C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas && dotnet test --verbosity normal\")"
+      "Bash(cmd.exe /c \"cd /d C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas && dotnet test --verbosity normal\")",
+      "Bash(git rm:*)"
     ]
   }
 }
