@@ -100,3 +100,4 @@ C:\Users\Luana\Documents\TCC\GerenciamentoDeVendas\Teste.Domain\obj\Debug\net8.0
 C:\Users\Luana\Documents\TCC\GerenciamentoDeVendas\Teste.Domain\obj\Debug\net8.0\Test.Domain.pdb
 C:\Users\Luana\Documents\TCC\GerenciamentoDeVendas\Teste.Domain\obj\Debug\net8.0\Test.Domain.genruntimeconfig.cache
 C:\Users\Luana\Documents\TCC\GerenciamentoDeVendas\Teste.Domain\obj\Debug\net8.0\ref\Test.Domain.dll
+C:\Users\Luana\Documents\TCC\GerenciamentoDeVendas\Teste.Domain\obj\Debug\net8.0\Test.Domain.sourcelink.json
