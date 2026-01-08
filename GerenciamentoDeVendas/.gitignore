@@ -52,3 +52,6 @@ ehthumbs.db
 
 # JetBrains Rider
 *.sln.iml
+
+# SQLite databases
+*.db
