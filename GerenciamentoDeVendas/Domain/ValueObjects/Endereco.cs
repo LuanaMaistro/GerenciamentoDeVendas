@@ -9,13 +9,24 @@ namespace Domain.ValueObjects
 {
     public class Endereco : IEquatable<Endereco>
     {
-        public string CEP { get; }
-        public string Logradouro { get; }
-        public string Numero { get; }
-        public string? Complemento { get; }
-        public string Bairro { get; }
-        public string Cidade { get; }
-        public string UF { get; }
+        // Construtor para EF Core
+        private Endereco()
+        {
+            CEP = string.Empty;
+            Logradouro = string.Empty;
+            Numero = string.Empty;
+            Bairro = string.Empty;
+            Cidade = string.Empty;
+            UF = string.Empty;
+        }
+
+        public string CEP { get; private set; }
+        public string Logradouro { get; private set; }
+        public string Numero { get; private set; }
+        public string? Complemento { get; private set; }
+        public string Bairro { get; private set; }
+        public string Cidade { get; private set; }
+        public string UF { get; private set; }
 
         private static readonly string[] UFsValidas =
         {
