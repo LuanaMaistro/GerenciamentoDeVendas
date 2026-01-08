@@ -15,11 +15,17 @@ namespace Domain.ValueObjects
 
     public class Documento : IEquatable<Documento>
     {
-        public TipoDocumento Tipo { get; }
-        public string Numero { get; }
+        // Construtor para EF Core
+        private Documento()
+        {
+            Numero = string.Empty;
+        }
 
-        private readonly CPF? _cpf;
-        private readonly CNPJ? _cnpj;
+        public TipoDocumento Tipo { get; private set; }
+        public string Numero { get; private set; }
+
+        private CPF? _cpf;
+        private CNPJ? _cnpj;
 
         public Documento(string numero)
         {
