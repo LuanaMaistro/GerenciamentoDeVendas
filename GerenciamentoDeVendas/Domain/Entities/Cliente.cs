@@ -22,6 +22,13 @@ namespace Domain.Entities
         private readonly List<Contato> _contatos = new();
         public IReadOnlyCollection<Contato> Contatos => _contatos.AsReadOnly();
 
+        // Construtor para EF Core
+        private Cliente()
+        {
+            Nome = string.Empty;
+            Documento = null!;
+        }
+
         public Cliente(string nome, Documento documento)
         {
             if (string.IsNullOrWhiteSpace(nome))

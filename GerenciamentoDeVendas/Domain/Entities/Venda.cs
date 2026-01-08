@@ -25,6 +25,12 @@ namespace Domain.Entities
 
     public class Venda
     {
+        // Construtor para EF Core
+        private Venda()
+        {
+            Itens = new List<ItemVenda>();
+        }
+
         public Guid Id { get; private set; }
         public Guid ClienteId { get; private set; }
         public DateTime DataVenda { get; private set; }
