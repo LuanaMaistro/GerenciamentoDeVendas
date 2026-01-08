@@ -22,9 +22,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Database
+// Database (SQLite)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Dependency Injection - Infrastructure
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
