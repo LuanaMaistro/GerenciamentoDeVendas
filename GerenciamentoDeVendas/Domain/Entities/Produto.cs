@@ -8,6 +8,13 @@ namespace Domain.Entities
 {
     public class Produto
     {
+        // Construtor para EF Core
+        private Produto()
+        {
+            Codigo = string.Empty;
+            Nome = string.Empty;
+        }
+
         public Guid Id { get; private set; }
         public string Codigo { get; private set; }
         public string Nome { get; private set; }

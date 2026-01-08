@@ -8,6 +8,9 @@ namespace Domain.Entities
 {
     public class Estoque
     {
+        // Construtor para EF Core
+        private Estoque() { }
+
         public Guid Id { get; private set; }
         public Guid ProdutoId { get; private set; }
         public int Quantidade { get; private set; }
