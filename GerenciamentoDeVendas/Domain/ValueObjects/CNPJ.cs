@@ -11,6 +11,7 @@ namespace Domain.ValueObjects
     {
         private readonly string _value;
 
+        public CNPJ() { }
         public CNPJ(string cnpj)
         {
             var cleaned = Clean(cnpj);
@@ -96,5 +97,10 @@ namespace Domain.ValueObjects
             return !(left == right);
         }
 
+        public static string FormataCNPJ(string CNPJ)
+        {
+            return Regex.Replace(CNPJ, @"^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$",
+            "$1.$2.$3/$4-$5");
+        }
     }
 }

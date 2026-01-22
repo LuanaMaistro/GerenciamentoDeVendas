@@ -23,6 +23,20 @@ namespace Infrastructure.Data.Configurations
             builder.Property(c => c.DataCadastro)
                 .IsRequired();
 
+
+            builder.OwnsOne(c => c.CPF, doc =>
+            {
+                doc.Property(d => d.Value)
+                    .HasColumnName("CPF")
+                    .HasMaxLength(11);
+            });
+
+            builder.OwnsOne(c => c.CNPJ, doc =>
+            {
+                doc.Property(d => d.Value)
+                    .HasColumnName("CNPJ")
+                    .HasMaxLength(14);
+            });
             // Configuração do Value Object Documento como Owned Type
             builder.OwnsOne(c => c.Documento, doc =>
             {
