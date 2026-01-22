@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.ValueObjects
 {
@@ -57,10 +58,11 @@ namespace Domain.ValueObjects
 
         public string GetFormatado()
         {
+
             return Tipo switch
             {
-                TipoDocumento.CPF => _cpf!.GetFormatted(),
-                TipoDocumento.CNPJ => _cnpj!.GetFormatted(),
+                TipoDocumento.CPF => CPF.FormataCPF(Numero),
+                TipoDocumento.CNPJ => CNPJ.FormataCNPJ(Numero),
                 _ => Numero
             };
         }

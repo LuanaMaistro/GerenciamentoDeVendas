@@ -11,6 +11,10 @@ namespace Domain.ValueObjects
     {
         private readonly string _value;
 
+        public CPF()
+        {
+
+        }
         public CPF(string cpf)
         {
             var cleaned = Clean(cpf);
@@ -94,6 +98,12 @@ namespace Domain.ValueObjects
         public static bool operator !=(CPF? left, CPF? right)
         {
             return !(left == right);
+        }
+
+        public static string FormataCPF(string CPF)
+        {
+            return Regex.Replace(CPF, @"^(\d{3})(\d{3})(\d{3})(\d{2})$",
+                 "$1.$2.$3-$4");
         }
     }
 }

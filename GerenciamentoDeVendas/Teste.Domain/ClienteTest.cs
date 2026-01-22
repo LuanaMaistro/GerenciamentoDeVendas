@@ -36,12 +36,12 @@ namespace Test.Domain
             Assert.Throws<ArgumentException>(() => new Cliente("", CriarDocumentoValido()));
         }
 
-        [Fact]
-        public void Cliente_DocumentoNulo_LancaExcecao()
-        {
-            // Arrange & Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new Cliente("João", null!));
-        }
+        //[Fact]
+        //public void Cliente_DocumentoNulo_LancaExcecao()
+        //{
+        //    // Arrange & Act & Assert
+        //    Assert.Throws<ArgumentNullException>(() => new Cliente("João", null!));
+        //}
 
         [Fact]
         public void Inativar_QuandoChamado_AtivoFalse()

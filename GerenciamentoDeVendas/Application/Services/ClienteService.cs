@@ -57,7 +57,7 @@ namespace Application.Services
             if (await _unitOfWork.Clientes.DocumentoJaCadastradoAsync(documento))
                 throw new InvalidOperationException("Documento já cadastrado");
 
-            var cliente = new Cliente(dto.Nome, documento);
+            var cliente = new Cliente(dto.Nome, dto.Documento);
 
             if (dto.EnderecoPrincipal is not null)
             {
@@ -160,13 +160,18 @@ namespace Application.Services
                 cliente.Id,
                 cliente.Nome,
                 cliente.Documento.GetFormatado(),
-                cliente.Documento.Tipo.ToString(),
+                RetornaTipoDocumento(cliente),
                 cliente.Ativo,
                 cliente.DataCadastro,
                 cliente.EnderecoPrincipal is null ? null : MapToEnderecoDTO(cliente.EnderecoPrincipal),
                 cliente.EnderecosSecundarios.Select(MapToEnderecoDTO),
                 cliente.Contatos.Select(MapToContatoDTO)
             );
+        }
+
+        private static string RetornaTipoDocumento(Cliente cliente)
+        {
+            return string.IsNullOrEmpty(cliente.CNPJ.Value) ? "Pessoa Física" : "Pessoa Jurídica";
         }
 
         private static EnderecoDTO MapToEnderecoDTO(Endereco endereco)

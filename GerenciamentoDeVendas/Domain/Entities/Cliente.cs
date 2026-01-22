@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.Entities
 {
@@ -14,6 +16,8 @@ namespace Domain.Entities
         public Documento Documento { get; private set; }
         public bool Ativo { get; private set; }
         public DateTime DataCadastro { get; private set; }
+        public CNPJ CNPJ { get; private set; }
+        public CPF CPF { get; private set; }
 
         public Endereco? EnderecoPrincipal { get; private set; }
         private readonly List<Endereco> _enderecosSecundarios = new();
@@ -27,6 +31,32 @@ namespace Domain.Entities
         {
             Nome = string.Empty;
             Documento = null!;
+        }
+
+        public Cliente(string nome, string documento)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                throw new ArgumentException("Nome é obrigatório", nameof(nome));
+
+            if (documento is null)
+                throw new ArgumentNullException(nameof(documento), "Documento é obrigatório");
+
+            var numeroLimpo = Regex.Replace(documento ?? string.Empty, @"[^\d]", string.Empty);
+
+            if (numeroLimpo.Length == 11)
+            {
+                CPF = new CPF(numeroLimpo);
+            }
+            else
+            {
+                CNPJ = new CNPJ(numeroLimpo);
+            }
+
+            Id = Guid.NewGuid();
+            Nome = nome.Trim();
+            Documento = new Documento(numeroLimpo);
+            Ativo = true;
+            DataCadastro = DateTime.Now;
         }
 
         public Cliente(string nome, Documento documento)

@@ -176,6 +176,44 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Cliente", b =>
                 {
+                    b.OwnsOne("Domain.ValueObjects.CNPJ", "CNPJ", b1 =>
+                        {
+                            b1.Property<Guid>("ClienteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(14)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("CNPJ");
+
+                            b1.HasKey("ClienteId");
+
+                            b1.ToTable("Clientes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ClienteId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.CPF", "CPF", b1 =>
+                        {
+                            b1.Property<Guid>("ClienteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(11)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("CPF");
+
+                            b1.HasKey("ClienteId");
+
+                            b1.ToTable("Clientes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ClienteId");
+                        });
+
                     b.OwnsOne("Domain.ValueObjects.Documento", "Documento", b1 =>
                         {
                             b1.Property<Guid>("ClienteId")
@@ -253,6 +291,12 @@ namespace Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ClienteId");
                         });
+
+                    b.Navigation("CNPJ")
+                        .IsRequired();
+
+                    b.Navigation("CPF")
+                        .IsRequired();
 
                     b.Navigation("Documento")
                         .IsRequired();
