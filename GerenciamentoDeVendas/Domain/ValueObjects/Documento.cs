@@ -15,12 +15,6 @@ namespace Domain.ValueObjects
 
     public class Documento : IEquatable<Documento>
     {
-        // Construtor para EF Core
-        private Documento()
-        {
-            Numero = string.Empty;
-        }
-
         public TipoDocumento Tipo { get; private set; }
         public string Numero { get; private set; }
 
