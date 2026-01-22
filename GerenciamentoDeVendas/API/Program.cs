@@ -32,6 +32,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API para gerenciamento de vendas e estoque"
     });
+    c.AddServer(new() { Url = "http://localhost:5001", Description = "Servidor Local" });
 });
 
 // Database (SQLite)
