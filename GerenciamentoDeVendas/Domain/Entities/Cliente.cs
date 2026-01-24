@@ -29,6 +29,23 @@ namespace Domain.Entities
             Documento = null!;
         }
 
+        public Cliente(string nome, string documento)
+        {
+
+            if (string.IsNullOrWhiteSpace(nome))
+                throw new ArgumentException("Nome é obrigatório", nameof(nome));
+
+            if (documento is null)
+                throw new ArgumentNullException(nameof(documento), "Documento é obrigatório");
+
+            Id = Guid.NewGuid();
+            Nome = nome.Trim();
+            //criando o objeto de documento dentro do construtor do cliente
+            Documento = new Documento(documento);
+            Ativo = true;
+            DataCadastro = DateTime.Now;
+        }
+
         public Cliente(string nome, Documento documento)
         {
             if (string.IsNullOrWhiteSpace(nome))
@@ -78,6 +95,12 @@ namespace Domain.Entities
         public void RemoverEnderecoSecundario(Endereco endereco)
         {
             _enderecosSecundarios.Remove(endereco);
+        }
+
+        public void AdicionarContatos(IEnumerable<Contato> contatos)
+        {
+            contatos.ToList()
+                .ForEach(AdicionarContato);
         }
 
         public void AdicionarContato(Contato contato)

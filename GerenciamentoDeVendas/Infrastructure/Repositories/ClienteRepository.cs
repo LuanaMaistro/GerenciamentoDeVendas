@@ -12,6 +12,8 @@ namespace Infrastructure.Repositories
 {
     public class ClienteRepository : RepositoryBase<Cliente>, IClienteRepository
     {
+        // foi aqui que você falou que eu ia te matar por ter um construtor vazio? ahuahua
+        // esse construtor aqui tá certo. como você tá herdando uma classe, ele precisa passar os parametros para classe mãe :)
         public ClienteRepository(AppDbContext context) : base(context)
         {
         }

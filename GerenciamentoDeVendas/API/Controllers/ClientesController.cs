@@ -66,8 +66,20 @@ namespace API.Controllers
                 var cliente = await _clienteService.CriarAsync(dto);
                 return CreatedAtAction(nameof(ObterPorId), new { id = cliente.Id }, cliente);
             }
+            // não existe nada de ERRADO em try catch (embora você vá achar gente dizendo que tem por ai rsrsr)
+            // tem um problema que eu tive no E-Proc que eu acho legal de compartilhar:
+            // hoje, agora, nesse momento, você tem tratamento para duas exceções (InvalidOperationException e ArgumentException)
+            // mas e se no futuro você tiver que tratar mais exceções?
+            // Além de deixar o código mais poluído, você vai acabar tendo um tratamento de erros inconsistente, porque, vai por mim,
+            //  você vai acabar esquecendo de tratar alguma exceção em algum método
+            // Tem um jeito simples de resolver esse problema: Action Filters
+            // é meio complexo de explicar escrevendo, mas se você quiser a gente pode entrar disc qualquer dia desses para fazer
+            // não é complicado, só é chato de explicar escrevendo sem uma referencia visual
             catch (InvalidOperationException ex)
             {
+                // outra diquinha rápida: não lance de volta as mensagens de erros para.
+                // mesmo que você esteja tratando só exceções esperadas, pode ser que venha uma dessas que você não estava calculando
+                // o que pode acabar expondo informações técnicas do seu sistema, como: stack trace, nomes de classes, bibliotecas, etc
                 return BadRequest(new { message = ex.Message });
             }
             catch (ArgumentException ex)
