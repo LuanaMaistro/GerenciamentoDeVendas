@@ -63,7 +63,8 @@ namespace Infrastructure.Data.Configurations
 
                 ct.WithOwner().HasForeignKey("ClienteId");
 
-                ct.Property<int>("Id");
+                ct.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
                 ct.HasKey("Id");
 
                 ct.Property(c => c.Telefone)
@@ -75,7 +76,6 @@ namespace Infrastructure.Data.Configurations
                 ct.Property(c => c.Email)
                     .HasMaxLength(200);
             });
-
 
             builder.Navigation(c => c.ContatosSecundarios)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
@@ -119,10 +119,9 @@ namespace Infrastructure.Data.Configurations
 
                 end.WithOwner().HasForeignKey("ClienteId");
 
-                end.Property<int>("Id");
+                end.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
                 end.HasKey("Id");
-
-                end.UsePropertyAccessMode(PropertyAccessMode.Field);
 
                 end.Property(e => e.CEP)
                     .IsRequired()
@@ -151,6 +150,9 @@ namespace Infrastructure.Data.Configurations
                     .IsRequired()
                     .HasMaxLength(2);
             });
+
+            builder.Navigation(c => c.EnderecosSecundarios)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
      }
 }
