@@ -15,12 +15,19 @@ namespace Domain.Entities
         public bool Ativo { get; private set; }
         public DateTime DataCadastro { get; private set; }
 
+        // Contato Principal (inline na tabela Clientes)
+        public Contato? ContatoPrincipal { get; private set; }
+
+        // Contatos Secundários (tabela separada)
+        private readonly List<Contato> _contatosSecundarios = new();
+        public IReadOnlyCollection<Contato> ContatosSecundarios => _contatosSecundarios.AsReadOnly();
+
+        // Endereço Principal (inline na tabela Clientes)
         public Endereco? EnderecoPrincipal { get; private set; }
+
+        // Endereços Secundários (tabela separada)
         private readonly List<Endereco> _enderecosSecundarios = new();
         public IReadOnlyCollection<Endereco> EnderecosSecundarios => _enderecosSecundarios.AsReadOnly();
-
-        private readonly List<Contato> _contatos = new();
-        public IReadOnlyCollection<Contato> Contatos => _contatos.AsReadOnly();
 
         // Construtor para EF Core
         private Cliente()
@@ -62,11 +69,33 @@ namespace Domain.Entities
             Nome = novoNome.Trim();
         }
 
+        // Contato Principal
+        public void SetContatoPrincipal(Contato contato)
+        {
+            ContatoPrincipal = contato ?? throw new ArgumentNullException(nameof(contato));
+        }
+
+        // Contatos Secundários
+        public void AdicionarContatoSecundario(Contato contato)
+        {
+            if (contato is null)
+                throw new ArgumentNullException(nameof(contato));
+
+            _contatosSecundarios.Add(contato);
+        }
+
+        public void RemoverContatoSecundario(Contato contato)
+        {
+            _contatosSecundarios.Remove(contato);
+        }
+
+        // Endereço Principal
         public void SetEnderecoPrincipal(Endereco endereco)
         {
             EnderecoPrincipal = endereco ?? throw new ArgumentNullException(nameof(endereco));
         }
 
+        // Endereços Secundários
         public void AdicionarEnderecoSecundario(Endereco endereco)
         {
             if (endereco is null)
@@ -78,34 +107,6 @@ namespace Domain.Entities
         public void RemoverEnderecoSecundario(Endereco endereco)
         {
             _enderecosSecundarios.Remove(endereco);
-        }
-
-        public void AdicionarContato(Contato contato)
-        {
-            if (contato is null)
-                throw new ArgumentNullException(nameof(contato));
-
-            if (contato.Principal)
-            {
-                foreach (var c in _contatos.Where(c => c.Tipo == contato.Tipo && c.Principal))
-                {
-                    _contatos.Remove(c);
-                    _contatos.Add(new Contato(c.Tipo, c.Valor, false));
-                }
-            }
-
-            _contatos.Add(contato);
-        }
-
-        public void RemoverContato(Contato contato)
-        {
-            _contatos.Remove(contato);
-        }
-
-        public Contato? ObterContatoPrincipal(TipoContato tipo)
-        {
-            return _contatos.FirstOrDefault(c => c.Tipo == tipo && c.Principal)
-                ?? _contatos.FirstOrDefault(c => c.Tipo == tipo);
         }
     }
 }
