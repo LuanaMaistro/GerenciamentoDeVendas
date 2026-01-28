@@ -187,7 +187,7 @@ namespace Application.Services
                 cliente.ContatoPrincipal is null ? null : MapToContatoDTO(cliente.ContatoPrincipal),
                 cliente.ContatosSecundarios.Select(MapToContatoDTO),
                 cliente.EnderecoPrincipal is null ? null : MapToEnderecoDTO(cliente.EnderecoPrincipal),
-                cliente.EnderecosSecundarios.Select(MapToEnderecoDTO)
+                cliente.EnderecosSecundarios.Select(MapToEnderecoDTO)                                                                      
             );
         }
 
