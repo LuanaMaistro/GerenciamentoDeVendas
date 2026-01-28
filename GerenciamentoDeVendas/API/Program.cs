@@ -50,11 +50,11 @@ builder.Services.AddScoped<IVendaService, VendaService>();
 
 var app = builder.Build();
 
-// Garante que o banco de dados seja criado com o schema atualizado
+// Aplica migrations pendentes automaticamente ao iniciar
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
