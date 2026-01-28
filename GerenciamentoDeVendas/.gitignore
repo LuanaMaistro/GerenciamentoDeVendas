@@ -55,3 +55,5 @@ ehthumbs.db
 
 # SQLite databases
 *.db
+*.db-shm
+*.db-wal
