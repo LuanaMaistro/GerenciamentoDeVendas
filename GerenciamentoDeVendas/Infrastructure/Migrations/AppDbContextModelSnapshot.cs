@@ -176,25 +176,60 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Cliente", b =>
                 {
-                    b.OwnsOne("Domain.ValueObjects.Documento", "Documento", b1 =>
+                    b.OwnsOne("Domain.ValueObjects.Contato", "ContatoPrincipal", b1 =>
                         {
                             b1.Property<Guid>("ClienteId")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("Numero")
-                                .IsRequired()
-                                .HasMaxLength(14)
+                            b1.Property<string>("Celular")
+                                .HasMaxLength(11)
                                 .HasColumnType("TEXT")
-                                .HasColumnName("DocumentoNumero");
+                                .HasColumnName("ContatoCelular");
 
-                            b1.Property<string>("Tipo")
-                                .IsRequired()
+                            b1.Property<string>("Email")
+                                .HasMaxLength(200)
                                 .HasColumnType("TEXT")
-                                .HasColumnName("DocumentoTipo");
+                                .HasColumnName("ContatoEmail");
+
+                            b1.Property<string>("Telefone")
+                                .HasMaxLength(11)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("ContatoTelefone");
 
                             b1.HasKey("ClienteId");
 
                             b1.ToTable("Clientes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ClienteId");
+                        });
+
+                    b.OwnsMany("Domain.ValueObjects.Contato", "ContatosSecundarios", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<string>("Celular")
+                                .HasMaxLength(11)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("ClienteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Email")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Telefone")
+                                .HasMaxLength(11)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ClienteId");
+
+                            b1.ToTable("ClienteContatos", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ClienteId");
@@ -254,10 +289,93 @@ namespace Infrastructure.Migrations
                                 .HasForeignKey("ClienteId");
                         });
 
+                    b.OwnsMany("Domain.ValueObjects.Endereco", "EnderecosSecundarios", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<string>("Bairro")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("CEP")
+                                .IsRequired()
+                                .HasMaxLength(8)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Cidade")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("ClienteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Complemento")
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Logradouro")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Numero")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("UF")
+                                .IsRequired()
+                                .HasMaxLength(2)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ClienteId");
+
+                            b1.ToTable("ClienteEnderecosSecundarios", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ClienteId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.Documento", "Documento", b1 =>
+                        {
+                            b1.Property<Guid>("ClienteId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Numero")
+                                .IsRequired()
+                                .HasMaxLength(14)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("DocumentoNumero");
+
+                            b1.Property<string>("Tipo")
+                                .IsRequired()
+                                .HasColumnType("TEXT")
+                                .HasColumnName("DocumentoTipo");
+
+                            b1.HasKey("ClienteId");
+
+                            b1.ToTable("Clientes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ClienteId");
+                        });
+
+                    b.Navigation("ContatoPrincipal");
+
+                    b.Navigation("ContatosSecundarios");
+
                     b.Navigation("Documento")
                         .IsRequired();
 
                     b.Navigation("EnderecoPrincipal");
+
+                    b.Navigation("EnderecosSecundarios");
                 });
 
             modelBuilder.Entity("Domain.Entities.Estoque", b =>

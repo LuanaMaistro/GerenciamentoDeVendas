@@ -7,51 +7,50 @@ using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {
-    public enum TipoContato
-    {
-        Telefone,
-        Celular,
-        Email
-    }
-
     public class Contato : IEquatable<Contato>
     {
-        public TipoContato Tipo { get; }
-        public string Valor { get; }
-        public bool Principal { get; }
+        public string? Telefone { get; private set; }
+        public string? Celular { get; private set; }
+        public string? Email { get; private set; }
 
-        public Contato(TipoContato tipo, string valor, bool principal = false)
+        // Construtor para EF Core
+        private Contato()
         {
-            if (string.IsNullOrWhiteSpace(valor))
-                throw new ArgumentException("Valor do contato é obrigatório", nameof(valor));
-
-            var valorLimpo = LimparValor(valor, tipo);
-
-            if (!ValidarContato(valorLimpo, tipo))
-                throw new ArgumentException($"{tipo} inválido", nameof(valor));
-
-            Tipo = tipo;
-            Valor = valorLimpo;
-            Principal = principal;
         }
 
-        private static string LimparValor(string valor, TipoContato tipo)
+        public Contato(string? telefone, string? celular, string? email)
         {
-            if (tipo == TipoContato.Email)
-                return valor.Trim().ToLower();
+            if (string.IsNullOrWhiteSpace(telefone) && string.IsNullOrWhiteSpace(celular) && string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Pelo menos um meio de contato deve ser informado (telefone, celular ou email)");
 
-            return Regex.Replace(valor, @"[^\d]", string.Empty);
-        }
-
-        private static bool ValidarContato(string valor, TipoContato tipo)
-        {
-            return tipo switch
+            if (!string.IsNullOrWhiteSpace(telefone))
             {
-                TipoContato.Telefone => ValidarTelefone(valor),
-                TipoContato.Celular => ValidarCelular(valor),
-                TipoContato.Email => ValidarEmail(valor),
-                _ => false
-            };
+                var telefoneLimpo = LimparNumero(telefone);
+                if (!ValidarTelefone(telefoneLimpo))
+                    throw new ArgumentException("Telefone inválido", nameof(telefone));
+                Telefone = telefoneLimpo;
+            }
+
+            if (!string.IsNullOrWhiteSpace(celular))
+            {
+                var celularLimpo = LimparNumero(celular);
+                if (!ValidarCelular(celularLimpo))
+                    throw new ArgumentException("Celular inválido", nameof(celular));
+                Celular = celularLimpo;
+            }
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                var emailLimpo = email.Trim().ToLower();
+                if (!ValidarEmail(emailLimpo))
+                    throw new ArgumentException("Email inválido", nameof(email));
+                Email = emailLimpo;
+            }
+        }
+
+        private static string LimparNumero(string valor)
+        {
+            return Regex.Replace(valor, @"[^\d]", string.Empty);
         }
 
         private static bool ValidarTelefone(string telefone)
@@ -74,33 +73,22 @@ namespace Domain.ValueObjects
             return Regex.IsMatch(email, pattern);
         }
 
-        public string GetFormatado()
+        public string GetTelefoneFormatado()
         {
-            return Tipo switch
-            {
-                TipoContato.Telefone => FormatarTelefone(),
-                TipoContato.Celular => FormatarCelular(),
-                TipoContato.Email => Valor,
-                _ => Valor
-            };
+            if (string.IsNullOrWhiteSpace(Telefone)) return string.Empty;
+            return Regex.Replace(Telefone, @"^(\d{2})(\d{4})(\d{4})$", "($1) $2-$3");
         }
 
-        private string FormatarTelefone()
+        public string GetCelularFormatado()
         {
-            // (XX) XXXX-XXXX
-            return Regex.Replace(Valor, @"^(\d{2})(\d{4})(\d{4})$", "($1) $2-$3");
-        }
-
-        private string FormatarCelular()
-        {
-            // (XX) 9XXXX-XXXX
-            return Regex.Replace(Valor, @"^(\d{2})(\d{5})(\d{4})$", "($1) $2-$3");
+            if (string.IsNullOrWhiteSpace(Celular)) return string.Empty;
+            return Regex.Replace(Celular, @"^(\d{2})(\d{5})(\d{4})$", "($1) $2-$3");
         }
 
         public bool Equals(Contato? other)
         {
             if (other is null) return false;
-            return Tipo == other.Tipo && Valor == other.Valor;
+            return Telefone == other.Telefone && Celular == other.Celular && Email == other.Email;
         }
 
         public override bool Equals(object? obj)
@@ -110,14 +98,16 @@ namespace Domain.ValueObjects
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Tipo, Valor);
+            return HashCode.Combine(Telefone, Celular, Email);
         }
 
         public override string ToString()
         {
-            var formatado = GetFormatado();
-            var tipoPrincipal = Principal ? " (Principal)" : "";
-            return $"{Tipo}: {formatado}{tipoPrincipal}";
+            var partes = new List<string>();
+            if (!string.IsNullOrWhiteSpace(Telefone)) partes.Add($"Tel: {GetTelefoneFormatado()}");
+            if (!string.IsNullOrWhiteSpace(Celular)) partes.Add($"Cel: {GetCelularFormatado()}");
+            if (!string.IsNullOrWhiteSpace(Email)) partes.Add($"Email: {Email}");
+            return string.Join(" | ", partes);
         }
 
         public static bool operator ==(Contato? left, Contato? right)

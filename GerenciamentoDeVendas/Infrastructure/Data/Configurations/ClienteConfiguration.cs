@@ -40,7 +40,47 @@ namespace Infrastructure.Data.Configurations
                 doc.Ignore(d => d.IsCNPJ);
             });
 
-            // Configuração do Value Object Endereco Principal como Owned Type
+            // Configuração do Contato Principal como Owned Type (inline na tabela Clientes)
+            builder.OwnsOne(c => c.ContatoPrincipal, ct =>
+            {
+                ct.Property(c => c.Telefone)
+                    .HasColumnName("ContatoTelefone")
+                    .HasMaxLength(11);
+
+                ct.Property(c => c.Celular)
+                    .HasColumnName("ContatoCelular")
+                    .HasMaxLength(11);
+
+                ct.Property(c => c.Email)
+                    .HasColumnName("ContatoEmail")
+                    .HasMaxLength(200);
+            });
+
+            // Configuração dos Contatos Secundários como Owned Type (tabela separada)
+            builder.OwnsMany(c => c.ContatosSecundarios, ct =>
+            {
+                ct.ToTable("ClienteContatos");
+
+                ct.WithOwner().HasForeignKey("ClienteId");
+
+                ct.Property<int>("Id");
+                ct.HasKey("Id");
+
+                ct.Property(c => c.Telefone)
+                    .HasMaxLength(11);
+
+                ct.Property(c => c.Celular)
+                    .HasMaxLength(11);
+
+                ct.Property(c => c.Email)
+                    .HasMaxLength(200);
+            });
+
+
+            builder.Navigation(c => c.ContatosSecundarios)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            // Configuração do Endereço Principal como Owned Type (inline na tabela Clientes)
             builder.OwnsOne(c => c.EnderecoPrincipal, end =>
             {
                 end.Property(e => e.CEP)
@@ -72,9 +112,45 @@ namespace Infrastructure.Data.Configurations
                     .HasMaxLength(2);
             });
 
-            // Ignora coleções de Value Objects (serão tabelas separadas se necessário)
-            builder.Ignore(c => c.EnderecosSecundarios);
-            builder.Ignore(c => c.Contatos);
+            // Configuração dos Endereços Secundários como Owned Type (tabela separada)
+            builder.OwnsMany(c => c.EnderecosSecundarios, end =>
+            {
+                end.ToTable("ClienteEnderecosSecundarios");
+
+                end.WithOwner().HasForeignKey("ClienteId");
+
+                end.Property<int>("Id");
+                end.HasKey("Id");
+
+                end.UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                end.Property(e => e.CEP)
+                    .IsRequired()
+                    .HasMaxLength(8);
+
+                end.Property(e => e.Logradouro)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                end.Property(e => e.Numero)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                end.Property(e => e.Complemento)
+                    .HasMaxLength(100);
+
+                end.Property(e => e.Bairro)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                end.Property(e => e.Cidade)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                end.Property(e => e.UF)
+                    .IsRequired()
+                    .HasMaxLength(2);
+            });
         }
-    }
+     }
 }
