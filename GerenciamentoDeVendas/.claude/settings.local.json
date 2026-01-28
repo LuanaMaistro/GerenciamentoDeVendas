@@ -4,7 +4,19 @@
       "Bash(tree:*)",
       "Bash(dotnet test:*)",
       "Bash(cmd.exe /c \"cd /d C:\\Users\\Luana\\Documents\\TCC\\GerenciamentoDeVendas && dotnet test --verbosity normal\")",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(npm i:*)",
+      "Bash(sudo npm i:*)",
+      "Bash(claude:*)",
+      "Bash(dotnet run:*)",
+      "Bash(curl:*)",
+      "Bash(/mnt/c/Program Files/dotnet/dotnet.exe:*)",
+      "Bash(cmd.exe /c \"where dotnet\")",
+      "Bash(cmd.exe /c \"cd /d C:\\\\\\\\Projetos\\\\\\\\GerenciamentoDeVendas\\\\\\\\GerenciamentoDeVendas\\\\\\\\API && dotnet run:*)",
+      "Bash(WINDOWS_IP=\"172.19.64.1\")",
+      "Bash(powershell.exe -Command \"Invoke-RestMethod -Uri ''''http://localhost:5001/api/clientes'''' -Method GET\")",
+      "Bash(cmd.exe /c \"curl -s http://localhost:5001/api/clientes\")",
+      "Bash(find:*)"
     ]
   }
 }
