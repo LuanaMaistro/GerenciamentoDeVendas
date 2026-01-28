@@ -10,179 +10,168 @@ namespace Test.Domain
     public class ContatoTest
     {
         [Fact]
-        public void Contato_TelefoneValido_CriaInstancia()
+        public void Contato_SomenteTelefoneValido_CriaInstancia()
         {
             // Arrange & Act
-            var contato = new Contato(TipoContato.Telefone, "1132223333");
+            var contato = new Contato("1132223333", null, null);
 
             // Assert
             Assert.NotNull(contato);
-            Assert.Equal(TipoContato.Telefone, contato.Tipo);
-            Assert.Equal("1132223333", contato.Valor);
-            Assert.False(contato.Principal);
+            Assert.Equal("1132223333", contato.Telefone);
+            Assert.Null(contato.Celular);
+            Assert.Null(contato.Email);
+        }
+
+        [Fact]
+        public void Contato_SomenteCelularValido_CriaInstancia()
+        {
+            // Arrange & Act
+            var contato = new Contato(null, "11987654321", null);
+
+            // Assert
+            Assert.NotNull(contato);
+            Assert.Null(contato.Telefone);
+            Assert.Equal("11987654321", contato.Celular);
+            Assert.Null(contato.Email);
+        }
+
+        [Fact]
+        public void Contato_SomenteEmailValido_CriaInstancia()
+        {
+            // Arrange & Act
+            var contato = new Contato(null, null, "teste@email.com");
+
+            // Assert
+            Assert.NotNull(contato);
+            Assert.Null(contato.Telefone);
+            Assert.Null(contato.Celular);
+            Assert.Equal("teste@email.com", contato.Email);
+        }
+
+        [Fact]
+        public void Contato_TodosPreenchidos_CriaInstancia()
+        {
+            // Arrange & Act
+            var contato = new Contato("1132223333", "11987654321", "teste@email.com");
+
+            // Assert
+            Assert.Equal("1132223333", contato.Telefone);
+            Assert.Equal("11987654321", contato.Celular);
+            Assert.Equal("teste@email.com", contato.Email);
         }
 
         [Fact]
         public void Contato_TelefoneComMascara_LimpaCorretamente()
         {
             // Arrange & Act
-            var contato = new Contato(TipoContato.Telefone, "(11) 3222-3333");
+            var contato = new Contato("(11) 3222-3333", null, null);
 
             // Assert
-            Assert.Equal("1132223333", contato.Valor);
-        }
-
-        [Fact]
-        public void Contato_CelularValido_CriaInstancia()
-        {
-            // Arrange & Act
-            var contato = new Contato(TipoContato.Celular, "11987654321");
-
-            // Assert
-            Assert.NotNull(contato);
-            Assert.Equal(TipoContato.Celular, contato.Tipo);
-            Assert.Equal("11987654321", contato.Valor);
+            Assert.Equal("1132223333", contato.Telefone);
         }
 
         [Fact]
         public void Contato_CelularComMascara_LimpaCorretamente()
         {
             // Arrange & Act
-            var contato = new Contato(TipoContato.Celular, "(11) 98765-4321");
+            var contato = new Contato(null, "(11) 98765-4321", null);
 
             // Assert
-            Assert.Equal("11987654321", contato.Valor);
-        }
-
-        [Fact]
-        public void Contato_EmailValido_CriaInstancia()
-        {
-            // Arrange & Act
-            var contato = new Contato(TipoContato.Email, "teste@email.com");
-
-            // Assert
-            Assert.NotNull(contato);
-            Assert.Equal(TipoContato.Email, contato.Tipo);
-            Assert.Equal("teste@email.com", contato.Valor);
+            Assert.Equal("11987654321", contato.Celular);
         }
 
         [Fact]
         public void Contato_EmailComMaiusculas_ConvertePraMinusculas()
         {
             // Arrange & Act
-            var contato = new Contato(TipoContato.Email, "TESTE@EMAIL.COM");
+            var contato = new Contato(null, null, "TESTE@EMAIL.COM");
 
             // Assert
-            Assert.Equal("teste@email.com", contato.Valor);
+            Assert.Equal("teste@email.com", contato.Email);
+        }
+
+        [Fact]
+        public void Contato_NenhumCampo_LancaExcecao()
+        {
+            // Arrange & Act & Assert
+            Assert.Throws<ArgumentException>(() => new Contato(null, null, null));
         }
 
         [Fact]
         public void Contato_TelefoneInvalido_LancaExcecao()
         {
             // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => new Contato(TipoContato.Telefone, "123456"));
+            Assert.Throws<ArgumentException>(() => new Contato("123456", null, null));
         }
 
         [Fact]
         public void Contato_CelularSemNove_LancaExcecao()
         {
             // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => new Contato(TipoContato.Celular, "11887654321"));
+            Assert.Throws<ArgumentException>(() => new Contato(null, "11887654321", null));
         }
 
         [Fact]
         public void Contato_EmailInvalido_LancaExcecao()
         {
             // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => new Contato(TipoContato.Email, "emailinvalido"));
+            Assert.Throws<ArgumentException>(() => new Contato(null, null, "emailinvalido"));
         }
 
         [Fact]
-        public void Contato_ValorVazio_LancaExcecao()
-        {
-            // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => new Contato(TipoContato.Email, ""));
-        }
-
-        [Fact]
-        public void Contato_Principal_True()
-        {
-            // Arrange & Act
-            var contato = new Contato(TipoContato.Email, "teste@email.com", true);
-
-            // Assert
-            Assert.True(contato.Principal);
-        }
-
-        [Fact]
-        public void Contato_GetFormatado_Telefone_RetornaCorreto()
+        public void Contato_GetTelefoneFormatado_RetornaCorreto()
         {
             // Arrange
-            var contato = new Contato(TipoContato.Telefone, "1132223333");
+            var contato = new Contato("1132223333", null, null);
 
             // Act
-            var formatado = contato.GetFormatado();
+            var formatado = contato.GetTelefoneFormatado();
 
             // Assert
             Assert.Equal("(11) 3222-3333", formatado);
         }
 
         [Fact]
-        public void Contato_GetFormatado_Celular_RetornaCorreto()
+        public void Contato_GetCelularFormatado_RetornaCorreto()
         {
             // Arrange
-            var contato = new Contato(TipoContato.Celular, "11987654321");
+            var contato = new Contato(null, "11987654321", null);
 
             // Act
-            var formatado = contato.GetFormatado();
+            var formatado = contato.GetCelularFormatado();
 
             // Assert
             Assert.Equal("(11) 98765-4321", formatado);
         }
 
         [Fact]
-        public void Contato_GetFormatado_Email_RetornaIgual()
+        public void Contato_GetTelefoneFormatado_SemTelefone_RetornaVazio()
         {
             // Arrange
-            var contato = new Contato(TipoContato.Email, "teste@email.com");
+            var contato = new Contato(null, null, "teste@email.com");
 
-            // Act
-            var formatado = contato.GetFormatado();
-
-            // Assert
-            Assert.Equal("teste@email.com", formatado);
-        }
-
-        [Fact]
-        public void Contato_ToString_RetornaDescricaoCompleta()
-        {
-            // Arrange
-            var contato = new Contato(TipoContato.Email, "teste@email.com", true);
-
-            // Act
-            var resultado = contato.ToString();
-
-            // Assert
-            Assert.Equal("Email: teste@email.com (Principal)", resultado);
+            // Act & Assert
+            Assert.Equal(string.Empty, contato.GetTelefoneFormatado());
+            Assert.Equal(string.Empty, contato.GetCelularFormatado());
         }
 
         [Fact]
         public void Contato_Equals_QuandoIguais_RetornaTrue()
         {
             // Arrange
-            var contato1 = new Contato(TipoContato.Email, "teste@email.com");
-            var contato2 = new Contato(TipoContato.Email, "TESTE@EMAIL.COM");
+            var contato1 = new Contato(null, null, "teste@email.com");
+            var contato2 = new Contato(null, null, "TESTE@EMAIL.COM");
 
             // Act & Assert
             Assert.True(contato1 == contato2);
         }
 
         [Fact]
-        public void Contato_Equals_TiposDiferentes_RetornaFalse()
+        public void Contato_Equals_QuandoDiferentes_RetornaFalse()
         {
             // Arrange
-            var contato1 = new Contato(TipoContato.Telefone, "1132223333");
-            var contato2 = new Contato(TipoContato.Celular, "11932223333");
+            var contato1 = new Contato("1132223333", null, null);
+            var contato2 = new Contato(null, null, "teste@email.com");
 
             // Act & Assert
             Assert.False(contato1 == contato2);
@@ -195,7 +184,7 @@ namespace Test.Domain
         public void Contato_EmailsValidos_CriaInstancia(string email)
         {
             // Arrange & Act
-            var contato = new Contato(TipoContato.Email, email);
+            var contato = new Contato(null, null, email);
 
             // Assert
             Assert.NotNull(contato);
@@ -208,7 +197,7 @@ namespace Test.Domain
         public void Contato_EmailsInvalidos_LancaExcecao(string email)
         {
             // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => new Contato(TipoContato.Email, email));
+            Assert.Throws<ArgumentException>(() => new Contato(null, null, email));
         }
     }
 }

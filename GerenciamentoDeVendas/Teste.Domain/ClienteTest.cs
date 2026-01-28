@@ -143,46 +143,42 @@ namespace Test.Domain
         }
 
         [Fact]
-        public void AdicionarContato_QuandoValido_Adiciona()
+        public void SetContatoPrincipal_QuandoValido_DefinePrincipal()
         {
             // Arrange
             var cliente = new Cliente("João da Silva", CriarDocumentoValido());
-            var contato = new Contato(TipoContato.Email, "joao@email.com", true);
+            var contato = new Contato(null, null, "joao@email.com");
 
             // Act
-            cliente.AdicionarContato(contato);
+            cliente.SetContatoPrincipal(contato);
 
             // Assert
-            Assert.Single(cliente.Contatos);
+            Assert.NotNull(cliente.ContatoPrincipal);
+            Assert.Equal("joao@email.com", cliente.ContatoPrincipal.Email);
         }
 
         [Fact]
-        public void ObterContatoPrincipal_QuandoExiste_Retorna()
+        public void AdicionarContatoSecundario_QuandoValido_Adiciona()
         {
             // Arrange
             var cliente = new Cliente("João da Silva", CriarDocumentoValido());
-            var contato = new Contato(TipoContato.Celular, "11987654321", true);
-            cliente.AdicionarContato(contato);
+            var contato = new Contato(null, "11987654321", null);
 
             // Act
-            var resultado = cliente.ObterContatoPrincipal(TipoContato.Celular);
+            cliente.AdicionarContatoSecundario(contato);
 
             // Assert
-            Assert.NotNull(resultado);
-            Assert.True(resultado.Principal);
+            Assert.Single(cliente.ContatosSecundarios);
         }
 
         [Fact]
-        public void ObterContatoPrincipal_QuandoNaoExiste_RetornaNull()
+        public void ContatoPrincipal_QuandoNaoDefinido_RetornaNull()
         {
             // Arrange
             var cliente = new Cliente("João da Silva", CriarDocumentoValido());
 
-            // Act
-            var resultado = cliente.ObterContatoPrincipal(TipoContato.Email);
-
             // Assert
-            Assert.Null(resultado);
+            Assert.Null(cliente.ContatoPrincipal);
         }
 
         [Fact]
