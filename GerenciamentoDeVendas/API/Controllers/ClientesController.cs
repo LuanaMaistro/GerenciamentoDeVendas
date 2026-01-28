@@ -123,11 +123,11 @@ namespace API.Controllers
         }
 
         [HttpPost("{id:guid}/contatos")]
-        public async Task<ActionResult> AdicionarContato(Guid id, [FromBody] ContatoDTO contato)
+        public async Task<ActionResult> AdicionarContatoSecundario(Guid id, [FromBody] ContatoDTO contato)
         {
             try
             {
-                await _clienteService.AdicionarContatoAsync(id, contato);
+                await _clienteService.AdicionarContatoSecundarioAsync(id, contato);
                 return NoContent();
             }
             catch (InvalidOperationException ex)

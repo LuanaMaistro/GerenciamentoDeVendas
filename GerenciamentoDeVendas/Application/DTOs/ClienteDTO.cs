@@ -10,21 +10,31 @@ namespace Application.DTOs
         string TipoDocumento,
         bool Ativo,
         DateTime DataCadastro,
+        ContatoDTO? ContatoPrincipal,
+        IEnumerable<ContatoDTO> ContatosSecundarios,
         EnderecoDTO? EnderecoPrincipal,
-        IEnumerable<EnderecoDTO> EnderecosSecundarios,
-        IEnumerable<ContatoDTO> Contatos
+        IEnumerable<EnderecoDTO> EnderecosSecundarios
     );
 
     public record ClienteCreateDTO(
         string Nome,
         string Documento,
+        ContatoDTO? ContatoPrincipal,
+        IEnumerable<ContatoDTO>? ContatosSecundarios,
         EnderecoDTO? EnderecoPrincipal,
-        IEnumerable<ContatoDTO>? Contatos
+        IEnumerable<EnderecoDTO>? EnderecosSecundarios
     );
 
     public record ClienteUpdateDTO(
         string Nome,
+        ContatoDTO? ContatoPrincipal,
         EnderecoDTO? EnderecoPrincipal
+    );
+
+    public record ContatoDTO(
+        string? Telefone,
+        string? Celular,
+        string? Email
     );
 
     public record EnderecoDTO(
@@ -35,11 +45,5 @@ namespace Application.DTOs
         string Bairro,
         string Cidade,
         string UF
-    );
-
-    public record ContatoDTO(
-        string Tipo,
-        string Valor,
-        bool Principal
     );
 }
