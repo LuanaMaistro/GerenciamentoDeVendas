@@ -16,7 +16,7 @@ namespace Application.Interfaces.Services
         Task<ClienteDTO> AtualizarAsync(Guid id, ClienteUpdateDTO dto);
         Task AtivarAsync(Guid id);
         Task InativarAsync(Guid id);
-        Task AdicionarContatoAsync(Guid clienteId, ContatoDTO contato);
+        Task AdicionarContatoSecundarioAsync(Guid clienteId, ContatoDTO contato);
         Task AdicionarEnderecoSecundarioAsync(Guid clienteId, EnderecoDTO endereco);
         Task<bool> ExisteAsync(Guid id);
         Task<bool> DocumentoJaCadastradoAsync(string documento);

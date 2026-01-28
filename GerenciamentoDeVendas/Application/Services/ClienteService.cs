@@ -59,18 +59,33 @@ namespace Application.Services
 
             var cliente = new Cliente(dto.Nome, documento);
 
+            if (dto.ContatoPrincipal is not null)
+            {
+                var contato = MapToContato(dto.ContatoPrincipal);
+                cliente.SetContatoPrincipal(contato);
+            }
+
+            if (dto.ContatosSecundarios is not null)
+            {
+                foreach (var contatoDto in dto.ContatosSecundarios)
+                {
+                    var contato = MapToContato(contatoDto);
+                    cliente.AdicionarContatoSecundario(contato);
+                }
+            }
+
             if (dto.EnderecoPrincipal is not null)
             {
                 var endereco = MapToEndereco(dto.EnderecoPrincipal);
                 cliente.SetEnderecoPrincipal(endereco);
             }
 
-            if (dto.Contatos is not null)
+            if (dto.EnderecosSecundarios is not null)
             {
-                foreach (var contatoDto in dto.Contatos)
+                foreach (var enderecoDto in dto.EnderecosSecundarios)
                 {
-                    var contato = MapToContato(contatoDto);
-                    cliente.AdicionarContato(contato);
+                    var endereco = MapToEndereco(enderecoDto);
+                    cliente.AdicionarEnderecoSecundario(endereco);
                 }
             }
 
@@ -86,6 +101,12 @@ namespace Application.Services
                 ?? throw new InvalidOperationException("Cliente não encontrado");
 
             cliente.AtualizarNome(dto.Nome);
+
+            if (dto.ContatoPrincipal is not null)
+            {
+                var contato = MapToContato(dto.ContatoPrincipal);
+                cliente.SetContatoPrincipal(contato);
+            }
 
             if (dto.EnderecoPrincipal is not null)
             {
@@ -119,13 +140,13 @@ namespace Application.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task AdicionarContatoAsync(Guid clienteId, ContatoDTO contatoDto)
+        public async Task AdicionarContatoSecundarioAsync(Guid clienteId, ContatoDTO contatoDto)
         {
             var cliente = await _unitOfWork.Clientes.ObterPorIdAsync(clienteId)
                 ?? throw new InvalidOperationException("Cliente não encontrado");
 
             var contato = MapToContato(contatoDto);
-            cliente.AdicionarContato(contato);
+            cliente.AdicionarContatoSecundario(contato);
 
             _unitOfWork.Clientes.Atualizar(cliente);
             await _unitOfWork.CommitAsync();
@@ -163,9 +184,19 @@ namespace Application.Services
                 cliente.Documento.Tipo.ToString(),
                 cliente.Ativo,
                 cliente.DataCadastro,
+                cliente.ContatoPrincipal is null ? null : MapToContatoDTO(cliente.ContatoPrincipal),
+                cliente.ContatosSecundarios.Select(MapToContatoDTO),
                 cliente.EnderecoPrincipal is null ? null : MapToEnderecoDTO(cliente.EnderecoPrincipal),
-                cliente.EnderecosSecundarios.Select(MapToEnderecoDTO),
-                cliente.Contatos.Select(MapToContatoDTO)
+                cliente.EnderecosSecundarios.Select(MapToEnderecoDTO)
+            );
+        }
+
+        private static ContatoDTO MapToContatoDTO(Contato contato)
+        {
+            return new ContatoDTO(
+                contato.GetTelefoneFormatado(),
+                contato.GetCelularFormatado(),
+                contato.Email
             );
         }
 
@@ -182,13 +213,9 @@ namespace Application.Services
             );
         }
 
-        private static ContatoDTO MapToContatoDTO(Contato contato)
+        private static Contato MapToContato(ContatoDTO dto)
         {
-            return new ContatoDTO(
-                contato.Tipo.ToString(),
-                contato.GetFormatado(),
-                contato.Principal
-            );
+            return new Contato(dto.Telefone, dto.Celular, dto.Email);
         }
 
         private static Endereco MapToEndereco(EnderecoDTO dto)
@@ -202,12 +229,6 @@ namespace Application.Services
                 dto.Cidade,
                 dto.UF
             );
-        }
-
-        private static Contato MapToContato(ContatoDTO dto)
-        {
-            var tipo = Enum.Parse<TipoContato>(dto.Tipo, ignoreCase: true);
-            return new Contato(tipo, dto.Valor, dto.Principal);
         }
     }
 }
