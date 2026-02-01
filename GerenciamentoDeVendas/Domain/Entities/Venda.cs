@@ -97,6 +97,14 @@ namespace Domain.Entities
             item.AtualizarQuantidade(novaQuantidade);
         }
 
+        public void Confirmar(string formaPagamentoStr)
+        {
+            if (!Enum.TryParse<FormaPagamento>(formaPagamentoStr, true, out var formaPagamento))
+                throw new ArgumentException("Forma de pagamento inválida", nameof(formaPagamentoStr));
+
+            Confirmar(formaPagamento);
+        }
+
         public void Confirmar(FormaPagamento formaPagamento)
         {
             if (Status != StatusVenda.Pendente)
