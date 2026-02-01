@@ -126,31 +126,47 @@ namespace Application.Services
 
         public async Task<VendaDTO> ConfirmarAsync(Guid vendaId, VendaConfirmarDTO dto)
         {
-            var venda = await _unitOfWork.Vendas.ObterPorIdAsync(vendaId)
-                ?? throw new InvalidOperationException("Venda não encontrada");
+            Venda venda = await ObterVenda(vendaId);
+            var estoques = await ObterEstoques(venda);
 
-            var formaPagamento = Enum.Parse<FormaPagamento>(dto.FormaPagamento, ignoreCase: true);
+            estoques.ForEach(e => e.RemoverQuantidade(venda.QuantidadePor(e.ProdutoId)));
+            venda.Confirmar(dto.FormaPagamento);
 
-            // Validar e baixar estoque
-            foreach (var item in venda.Itens)
+            await SalvarAlteracoes(venda, estoques);
+
+            await _unitOfWork.CommitAsync();
+            return await MontaRetornoConfirmacao(venda);
+
+        }
+        private async Task<Venda> ObterVenda(Guid vendaId)
+        {
+            return await _unitOfWork.Vendas.ObterPorIdAsync(vendaId)
+                            ?? throw new InvalidOperationException("Venda não encontrada");
+        }
+
+        private async Task<List<Estoque>> ObterEstoques(Venda venda)
+        {
+            var estoques = new List<Estoque>();
+
+            foreach (var item in venda.Itens.DistinctBy(i => i.ProdutoId))
             {
-                var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(item.ProdutoId);
-
-                if (estoque is null)
-                    throw new InvalidOperationException($"Estoque não encontrado para o produto {item.ProdutoNome}");
-
-                if (!estoque.TemEstoqueDisponivel(item.Quantidade))
-                    throw new InvalidOperationException($"Estoque insuficiente para o produto {item.ProdutoNome}");
-
-                estoque.RemoverQuantidade(item.Quantidade);
-                _unitOfWork.Estoques.Atualizar(estoque);
+                var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(item.ProdutoId)
+                    ?? throw new InvalidOperationException($"Estoque não encontrado para o produto {item.ProdutoNome}");
+                estoques.Add(estoque);
             }
 
-            venda.Confirmar(formaPagamento);
+            return estoques;
+        }
 
+        private async Task SalvarAlteracoes(Venda venda, List<Estoque> estoques)
+        {
             _unitOfWork.Vendas.Atualizar(venda);
+            await _unitOfWork.Estoques.AtualizarEstoquesAsync(estoques);
             await _unitOfWork.CommitAsync();
+        }
 
+        private async Task<VendaDTO> MontaRetornoConfirmacao(Venda venda)
+        {
             var cliente = await _unitOfWork.Clientes.ObterPorIdAsync(venda.ClienteId);
             return MapToDTO(venda, cliente?.Nome);
         }

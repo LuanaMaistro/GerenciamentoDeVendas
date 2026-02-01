@@ -97,6 +97,14 @@ namespace Domain.Entities
             item.AtualizarQuantidade(novaQuantidade);
         }
 
+        public void Confirmar(string formaPagamentoStr)
+        {
+            if (!Enum.TryParse<FormaPagamento>(formaPagamentoStr, true, out var formaPagamento))
+                throw new ArgumentException("Forma de pagamento inválida", nameof(formaPagamentoStr));
+
+            Confirmar(formaPagamento);
+        }
+
         public void Confirmar(FormaPagamento formaPagamento)
         {
             if (Status != StatusVenda.Pendente)
@@ -125,6 +133,11 @@ namespace Domain.Entities
         public bool PodeSerEditada()
         {
             return Status == StatusVenda.Pendente;
+        }
+
+        public int QuantidadePor(Guid produtoId)
+        {
+            return Itens.Where(i => i.ProdutoId == produtoId).Sum(i => i.Quantidade);
         }
     }
 }
