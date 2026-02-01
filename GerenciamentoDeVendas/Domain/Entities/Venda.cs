@@ -134,5 +134,10 @@ namespace Domain.Entities
         {
             return Status == StatusVenda.Pendente;
         }
+
+        public int QuantidadePor(Guid produtoId)
+        {
+            return Itens.Where(i => i.ProdutoId == produtoId).Sum(i => i.Quantidade);
+        }
     }
 }
