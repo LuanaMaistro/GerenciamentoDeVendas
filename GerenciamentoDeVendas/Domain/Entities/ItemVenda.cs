@@ -39,7 +39,7 @@ namespace Domain.Entities
             if (precoUnitario < 0)
                 throw new ArgumentException("Preço unitário não pode ser negativo", nameof(precoUnitario));
 
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             VendaId = vendaId;
             ProdutoId = produtoId;
             ProdutoNome = produtoNome.Trim();
