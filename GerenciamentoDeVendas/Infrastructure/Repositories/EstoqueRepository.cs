@@ -40,5 +40,10 @@ namespace Infrastructure.Repositories
             return await _dbSet
                 .AnyAsync(e => e.ProdutoId == produtoId);
         }
+
+        public async Task AtualizarEstoquesAsync(IEnumerable<Estoque> estoques)
+        {
+            _context.UpdateRange(estoques);
+        }
     }
 }

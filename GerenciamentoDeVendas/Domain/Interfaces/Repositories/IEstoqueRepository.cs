@@ -11,5 +11,7 @@ namespace Domain.Interfaces.Repositories
         Task<IEnumerable<Estoque>> ObterEstoqueBaixoAsync();
         Task<IEnumerable<Estoque>> ObterPorLocalizacaoAsync(string localizacao);
         Task<bool> ProdutoTemEstoqueAsync(Guid produtoId);
+
+        Task AtualizarEstoquesAsync(IEnumerable<Estoque> estoques);
     }
 }
