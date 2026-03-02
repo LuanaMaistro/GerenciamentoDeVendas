@@ -16,7 +16,9 @@
       "Bash(WINDOWS_IP=\"172.19.64.1\")",
       "Bash(powershell.exe -Command \"Invoke-RestMethod -Uri ''''http://localhost:5001/api/clientes'''' -Method GET\")",
       "Bash(cmd.exe /c \"curl -s http://localhost:5001/api/clientes\")",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npx:*)",
+      "Bash(wc:*)"
     ]
   }
 }
