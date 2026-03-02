@@ -2,7 +2,6 @@ using Application.DTOs;
 using Application.Interfaces.Services;
 using Domain.Entities;
 using Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +11,12 @@ namespace Application.Services
     public class VendaService : IVendaService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRecomendacaoService _recomendacaoService;
 
-        public VendaService(IUnitOfWork unitOfWork)
+        public VendaService(IUnitOfWork unitOfWork, IRecomendacaoService recomendacaoService)
         {
             _unitOfWork = unitOfWork;
+            _recomendacaoService = recomendacaoService;
         }
 
         public async Task<VendaDTO?> ObterPorIdAsync(Guid id)
@@ -150,6 +151,19 @@ namespace Application.Services
 
             _unitOfWork.Vendas.Atualizar(venda);
             await _unitOfWork.CommitAsync();
+
+            // Registra as compras no Recombee para alimentar as recomendações
+            foreach (var item in venda.Itens)
+            {
+                try
+                {
+                    await _recomendacaoService.RegistrarCompraAsync(venda.ClienteId, item.ProdutoId, item.Quantidade);
+                }
+                catch
+                {
+                    // Falha no Recombee não deve impedir a confirmação da venda
+                }
+            }
 
             var cliente = await _unitOfWork.Clientes.ObterPorIdAsync(venda.ClienteId);
             return MapToDTO(venda, cliente?.Nome);

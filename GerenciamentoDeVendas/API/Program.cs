@@ -4,6 +4,8 @@ using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Recombee.ApiClient;
+using Recombee.ApiClient.Util;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +44,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Dependency Injection - Infrastructure
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Recombee - cliente singleton (thread-safe, reutilizado em todas as requisições)
+var recombeeRegion = builder.Configuration["Recombee:Region"]?.ToLower() switch
+{
+    "us-west" => Region.UsWest,
+    "ap-se"   => Region.ApSe,
+    _         => Region.EuWest
+};
+builder.Services.AddSingleton(new RecombeeClient(
+    builder.Configuration["Recombee:DatabaseId"]!,
+    builder.Configuration["Recombee:PrivateToken"]!,
+    region: recombeeRegion
+));
+
 // Dependency Injection - Application Services
+builder.Services.AddScoped<IRecomendacaoService, RecomendacaoService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IEstoqueService, EstoqueService>();

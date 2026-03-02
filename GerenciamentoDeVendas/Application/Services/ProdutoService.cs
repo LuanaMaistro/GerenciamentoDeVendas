@@ -12,10 +12,12 @@ namespace Application.Services
     public class ProdutoService : IProdutoService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRecomendacaoService _recomendacaoService;
 
-        public ProdutoService(IUnitOfWork unitOfWork)
+        public ProdutoService(IUnitOfWork unitOfWork, IRecomendacaoService recomendacaoService)
         {
             _unitOfWork = unitOfWork;
+            _recomendacaoService = recomendacaoService;
         }
 
         public async Task<ProdutoDTO?> ObterPorIdAsync(Guid id)
@@ -70,6 +72,15 @@ namespace Application.Services
             await _unitOfWork.Produtos.AdicionarAsync(produto);
             await _unitOfWork.CommitAsync();
 
+            try
+            {
+                await _recomendacaoService.SincronizarProdutoAsync(produto.Id, produto.Nome, produto.Categoria, produto.PrecoUnitario);
+            }
+            catch
+            {
+                // Falha no Recombee não deve impedir o cadastro do produto
+            }
+
             return MapToDTO(produto);
         }
 
@@ -85,6 +96,15 @@ namespace Application.Services
 
             _unitOfWork.Produtos.Atualizar(produto);
             await _unitOfWork.CommitAsync();
+
+            try
+            {
+                await _recomendacaoService.SincronizarProdutoAsync(produto.Id, produto.Nome, produto.Categoria, produto.PrecoUnitario);
+            }
+            catch
+            {
+                // Falha no Recombee não deve impedir a atualização do produto
+            }
 
             return MapToDTO(produto);
         }
