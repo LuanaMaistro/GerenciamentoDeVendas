@@ -9,10 +9,12 @@ namespace API.Controllers
     public class RecomendacoesController : ControllerBase
     {
         private readonly IRecomendacaoService _recomendacaoService;
+        private readonly IClienteService _clienteService;
 
-        public RecomendacoesController(IRecomendacaoService recomendacaoService)
+        public RecomendacoesController(IRecomendacaoService recomendacaoService, IClienteService clienteService)
         {
             _recomendacaoService = recomendacaoService;
+            _clienteService = clienteService;
         }
 
         /// <summary>
@@ -32,6 +34,55 @@ namespace API.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        /// <summary>
+        /// Retorna os dados do cliente e suas recomendações personalizadas.
+        /// </summary>
+        [HttpGet("cliente/{clienteId:guid}/completo")]
+        public async Task<ActionResult<ClienteRecomendacoesDTO>> ObterMinhasRecomendacoes(
+            Guid clienteId,
+            [FromQuery] int quantidade = 5)
+        {
+            var cliente = await _clienteService.ObterPorIdAsync(clienteId);
+            if (cliente is null)
+                return NotFound(new { message = "Cliente não encontrado" });
+
+            try
+            {
+                var resultado = await _recomendacaoService.ObterRecomendacoesAsync(clienteId, quantidade);
+                return Ok(new ClienteRecomendacoesDTO(cliente, resultado.Itens));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Visão admin: retorna todos os clientes ativos com suas respectivas recomendações.
+        /// </summary>
+        [HttpGet("todos")]
+        public async Task<ActionResult<IEnumerable<ClienteRecomendacoesDTO>>> ObterTodosComRecomendacoes(
+            [FromQuery] int quantidade = 5)
+        {
+            var clientes = await _clienteService.ObterAtivosAsync();
+            var resultado = new List<ClienteRecomendacoesDTO>();
+
+            foreach (var cliente in clientes)
+            {
+                try
+                {
+                    var rec = await _recomendacaoService.ObterRecomendacoesAsync(cliente.Id, quantidade);
+                    resultado.Add(new ClienteRecomendacoesDTO(cliente, rec.Itens));
+                }
+                catch
+                {
+                    resultado.Add(new ClienteRecomendacoesDTO(cliente, []));
+                }
+            }
+
+            return Ok(resultado);
         }
 
         /// <summary>
