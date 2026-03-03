@@ -15,6 +15,11 @@ namespace Application.DTOs
         IEnumerable<RecomendacaoItemDTO> Itens
     );
 
+    public record ClienteRecomendacoesDTO(
+        ClienteDTO Cliente,
+        IEnumerable<RecomendacaoItemDTO> Recomendacoes
+    );
+
     public record VisualizacaoEventoDTO(
         Guid ClienteId,
         Guid ProdutoId
