@@ -14,14 +14,44 @@ namespace Application.Services
         private readonly RecombeeClient _client;
         private readonly IUnitOfWork _unitOfWork;
 
+        // Garante que as propriedades de item sejam criadas apenas uma vez por processo
+        private static bool _schemaInicializado;
+        private static readonly SemaphoreSlim _schemaLock = new(1, 1);
+
         public RecomendacaoService(RecombeeClient client, IUnitOfWork unitOfWork)
         {
             _client = client;
             _unitOfWork = unitOfWork;
         }
 
+        private async Task GarantirSchemaAsync()
+        {
+            if (_schemaInicializado) return;
+
+            await _schemaLock.WaitAsync();
+            try
+            {
+                if (_schemaInicializado) return;
+
+                var propriedades = new[] { ("nome", "string"), ("preco", "double"), ("categoria", "string") };
+                foreach (var (nome, tipo) in propriedades)
+                {
+                    try   { await _client.SendAsync(new AddItemProperty(nome, tipo)); }
+                    catch { /* propriedade já existe — ok */ }
+                }
+
+                _schemaInicializado = true;
+            }
+            finally
+            {
+                _schemaLock.Release();
+            }
+        }
+
         public async Task SincronizarProdutoAsync(Guid produtoId, string nome, string? categoria, decimal preco)
         {
+            await GarantirSchemaAsync();
+
             var values = new Dictionary<string, object>
             {
                 ["nome"] = nome,
