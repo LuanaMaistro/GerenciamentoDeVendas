@@ -10,6 +10,7 @@ namespace Domain.Interfaces
         IProdutoRepository Produtos { get; }
         IEstoqueRepository Estoques { get; }
         IVendaRepository Vendas { get; }
+        IUsuarioRepository Usuarios { get; }
 
         Task<int> CommitAsync();
         Task RollbackAsync();
