@@ -15,6 +15,7 @@ namespace Infrastructure
         private IProdutoRepository? _produtos;
         private IEstoqueRepository? _estoques;
         private IVendaRepository? _vendas;
+        private IUsuarioRepository? _usuarios;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -32,6 +33,9 @@ namespace Infrastructure
 
         public IVendaRepository Vendas =>
             _vendas ??= new VendaRepository(_context);
+
+        public IUsuarioRepository Usuarios =>
+            _usuarios ??= new UsuarioRepository(_context);
 
         public async Task<int> CommitAsync()
         {

@@ -1,11 +1,13 @@
 using Application.DTOs;
 using Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class RelatoriosController : ControllerBase
     {
         private readonly IRelatorioService _relatorioService;

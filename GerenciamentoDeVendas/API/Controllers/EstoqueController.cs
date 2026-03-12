@@ -1,11 +1,13 @@
 using Application.DTOs;
 using Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EstoqueController : ControllerBase
     {
         private readonly IEstoqueService _estoqueService;
