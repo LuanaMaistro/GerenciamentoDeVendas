@@ -24,7 +24,8 @@
       "Bash(echo CLIENTE: $CLIENTE:*)",
       "Bash(powershell.exe:*)",
       "Bash(tail:*)",
-      "Bash(grep : error:*)"
+      "Bash(grep : error:*)",
+      "Bash(sleep 5 && curl -s http://localhost:5001/api/relatorios/estoque | python3 -m json.tool 2>/dev/null || curl -s http://localhost:5001/api/relatorios/estoque)"
     ]
   }
 }
