@@ -18,7 +18,13 @@
       "Bash(cmd.exe /c \"curl -s http://localhost:5001/api/clientes\")",
       "Bash(find:*)",
       "Bash(npx:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(\"/mnt/c/Program Files/dotnet/dotnet.exe\" build:*)",
+      "Bash(\"/mnt/c/Program Files/dotnet/dotnet.exe\" test:*)",
+      "Bash(echo CLIENTE: $CLIENTE:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(tail:*)",
+      "Bash(grep : error:*)"
     ]
   }
 }
