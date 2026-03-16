@@ -8,6 +8,8 @@ namespace API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
+    // TODO: remover [AllowAnonymous]
+    [AllowAnonymous]
     public class ClientesController : ControllerBase
     {
         private readonly IClienteService _clienteService;
