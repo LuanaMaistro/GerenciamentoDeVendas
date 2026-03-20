@@ -55,13 +55,6 @@ namespace API.Controllers
             return Ok(estoques);
         }
 
-        [HttpGet("localizacao/{localizacao}")]
-        public async Task<ActionResult<IEnumerable<EstoqueDTO>>> ObterPorLocalizacao(string localizacao)
-        {
-            var estoques = await _estoqueService.ObterPorLocalizacaoAsync(localizacao);
-            return Ok(estoques);
-        }
-
         [HttpPost]
         public async Task<ActionResult<EstoqueDTO>> Criar([FromBody] EstoqueCreateDTO dto)
         {

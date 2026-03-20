@@ -93,7 +93,6 @@ namespace Application.Services
                     produto?.Nome ?? "Produto não encontrado",
                     estoque.Quantidade,
                     estoque.QuantidadeMinima,
-                    estoque.Localizacao,
                     estoque.EstaAbaixoDoMinimo()
                 ));
             }

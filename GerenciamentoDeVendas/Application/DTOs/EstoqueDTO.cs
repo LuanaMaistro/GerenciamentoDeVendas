@@ -8,7 +8,6 @@ namespace Application.DTOs
         string? ProdutoNome,
         int Quantidade,
         int QuantidadeMinima,
-        string? Localizacao,
         bool AbaixoDoMinimo,
         DateTime DataUltimaAtualizacao
     );
@@ -16,8 +15,7 @@ namespace Application.DTOs
     public record EstoqueCreateDTO(
         Guid ProdutoId,
         int QuantidadeInicial,
-        int QuantidadeMinima,
-        string? Localizacao
+        int QuantidadeMinima
     );
 
     public record EstoqueMovimentacaoDTO(
@@ -27,7 +25,6 @@ namespace Application.DTOs
     );
 
     public record EstoqueUpdateDTO(
-        int QuantidadeMinima,
-        string? Localizacao
+        int QuantidadeMinima
     );
 }

@@ -28,13 +28,6 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Estoque>> ObterPorLocalizacaoAsync(string localizacao)
-        {
-            return await _dbSet
-                .Where(e => e.Localizacao == localizacao)
-                .ToListAsync();
-        }
-
         public async Task<bool> ProdutoTemEstoqueAsync(Guid produtoId)
         {
             return await _dbSet

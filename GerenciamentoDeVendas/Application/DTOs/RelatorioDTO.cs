@@ -30,7 +30,6 @@ namespace Application.DTOs
         string ProdutoNome,
         int Quantidade,
         int QuantidadeMinima,
-        string? Localizacao,
         bool AbaixoDoMinimo
     );
 

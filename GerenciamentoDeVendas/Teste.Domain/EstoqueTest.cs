@@ -16,7 +16,7 @@ namespace Test.Domain
             var produtoId = Guid.NewGuid();
 
             // Act
-            var estoque = new Estoque(produtoId, 100, 10, "Prateleira A1");
+            var estoque = new Estoque(produtoId, 100, 10);
 
             // Assert
             Assert.NotNull(estoque);
@@ -24,7 +24,6 @@ namespace Test.Domain
             Assert.Equal(produtoId, estoque.ProdutoId);
             Assert.Equal(100, estoque.Quantidade);
             Assert.Equal(10, estoque.QuantidadeMinima);
-            Assert.Equal("Prateleira A1", estoque.Localizacao);
         }
 
         [Fact]
@@ -177,17 +176,5 @@ namespace Test.Domain
             Assert.Throws<ArgumentException>(() => estoque.AtualizarQuantidadeMinima(-5));
         }
 
-        [Fact]
-        public void Estoque_AtualizarLocalizacao_AtualizaCorretamente()
-        {
-            // Arrange
-            var estoque = new Estoque(Guid.NewGuid(), 50, 10, "Prateleira A1");
-
-            // Act
-            estoque.AtualizarLocalizacao("Prateleira B2");
-
-            // Assert
-            Assert.Equal("Prateleira B2", estoque.Localizacao);
-        }
     }
 }

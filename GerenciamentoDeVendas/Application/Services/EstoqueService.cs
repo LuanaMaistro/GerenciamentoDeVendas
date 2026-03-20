@@ -64,33 +64,27 @@ namespace Application.Services
             return result;
         }
 
-        public async Task<IEnumerable<EstoqueDTO>> ObterPorLocalizacaoAsync(string localizacao)
-        {
-            var estoques = await _unitOfWork.Estoques.ObterPorLocalizacaoAsync(localizacao);
-            var result = new List<EstoqueDTO>();
-
-            foreach (var estoque in estoques)
-            {
-                var produto = await _unitOfWork.Produtos.ObterPorIdAsync(estoque.ProdutoId);
-                result.Add(MapToDTO(estoque, produto?.Nome));
-            }
-
-            return result;
-        }
-
         public async Task<EstoqueDTO> CriarAsync(EstoqueCreateDTO dto)
         {
             var produto = await _unitOfWork.Produtos.ObterPorIdAsync(dto.ProdutoId)
                 ?? throw new InvalidOperationException("Produto não encontrado");
 
-            if (await _unitOfWork.Estoques.ProdutoTemEstoqueAsync(dto.ProdutoId))
-                throw new InvalidOperationException("Produto já possui registro de estoque");
+            var estoqueExistente = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(dto.ProdutoId);
+            if (estoqueExistente is not null)
+            {
+                if (dto.QuantidadeInicial > 0)
+                    estoqueExistente.AdicionarQuantidade(dto.QuantidadeInicial);
+
+                _unitOfWork.Estoques.Atualizar(estoqueExistente);
+                await _unitOfWork.CommitAsync();
+
+                return MapToDTO(estoqueExistente, produto.Nome);
+            }
 
             var estoque = new Estoque(
                 dto.ProdutoId,
                 dto.QuantidadeInicial,
-                dto.QuantidadeMinima,
-                dto.Localizacao
+                dto.QuantidadeMinima
             );
 
             await _unitOfWork.Estoques.AdicionarAsync(estoque);
@@ -105,7 +99,6 @@ namespace Application.Services
                 ?? throw new InvalidOperationException("Estoque não encontrado");
 
             estoque.AtualizarQuantidadeMinima(dto.QuantidadeMinima);
-            estoque.AtualizarLocalizacao(dto.Localizacao);
 
             _unitOfWork.Estoques.Atualizar(estoque);
             await _unitOfWork.CommitAsync();
@@ -156,7 +149,6 @@ namespace Application.Services
                 produtoNome,
                 estoque.Quantidade,
                 estoque.QuantidadeMinima,
-                estoque.Localizacao,
                 estoque.EstaAbaixoDoMinimo(),
                 estoque.DataUltimaAtualizacao
             );
