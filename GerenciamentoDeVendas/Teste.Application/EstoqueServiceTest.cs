@@ -33,7 +33,7 @@ namespace Teste.Application
         public async Task ObterPorIdAsync_QuandoExiste_RetornaDTO()
         {
             var produtoId = Guid.NewGuid();
-            var estoque = new Estoque(produtoId, 50, 10, "A1");
+            var estoque = new Estoque(produtoId, 50, 10);
             var produto = new Produto("P001", "Notebook", 2500m);
 
             _estoqueRepoMock.Setup(r => r.ObterPorIdAsync(estoque.Id)).ReturnsAsync(estoque);
@@ -63,21 +63,28 @@ namespace Teste.Application
         {
             _produtoRepoMock.Setup(r => r.ObterPorIdAsync(It.IsAny<Guid>())).ReturnsAsync((Produto?)null);
 
-            var dto = new EstoqueCreateDTO(Guid.NewGuid(), 10, 2, "A1");
+            var dto = new EstoqueCreateDTO(Guid.NewGuid(), 10, 2);
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CriarAsync(dto));
         }
 
         [Fact]
-        public async Task CriarAsync_ProdutoJaTemEstoque_LancaInvalidOperationException()
+        public async Task CriarAsync_ProdutoJaTemEstoque_IncrementaQuantidadeExistente()
         {
             var produto = new Produto("P001", "Notebook", 2500m);
+            var estoqueExistente = new Estoque(produto.Id, 20, 5);
+
             _produtoRepoMock.Setup(r => r.ObterPorIdAsync(produto.Id)).ReturnsAsync(produto);
-            _estoqueRepoMock.Setup(r => r.ProdutoTemEstoqueAsync(produto.Id)).ReturnsAsync(true);
+            _estoqueRepoMock.Setup(r => r.ObterPorProdutoIdAsync(produto.Id)).ReturnsAsync(estoqueExistente);
 
-            var dto = new EstoqueCreateDTO(produto.Id, 10, 2, "A1");
+            var dto = new EstoqueCreateDTO(produto.Id, 10, 99);
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CriarAsync(dto));
+            var resultado = await _service.CriarAsync(dto);
+
+            Assert.Equal(30, resultado.Quantidade);
+            Assert.Equal(5, resultado.QuantidadeMinima); // QuantidadeMinima não é alterada no upsert
+            _estoqueRepoMock.Verify(r => r.AdicionarAsync(It.IsAny<Estoque>()), Times.Never);
+            _uowMock.Verify(u => u.CommitAsync(), Times.Once);
         }
 
         [Fact]
@@ -85,10 +92,10 @@ namespace Teste.Application
         {
             var produto = new Produto("P001", "Notebook", 2500m);
             _produtoRepoMock.Setup(r => r.ObterPorIdAsync(produto.Id)).ReturnsAsync(produto);
-            _estoqueRepoMock.Setup(r => r.ProdutoTemEstoqueAsync(produto.Id)).ReturnsAsync(false);
+            _estoqueRepoMock.Setup(r => r.ObterPorProdutoIdAsync(produto.Id)).ReturnsAsync((Estoque?)null);
             _estoqueRepoMock.Setup(r => r.AdicionarAsync(It.IsAny<Estoque>())).Returns(Task.CompletedTask);
 
-            var dto = new EstoqueCreateDTO(produto.Id, 50, 5, "Prateleira A");
+            var dto = new EstoqueCreateDTO(produto.Id, 50, 5);
 
             var resultado = await _service.CriarAsync(dto);
 
@@ -107,7 +114,7 @@ namespace Teste.Application
         {
             _estoqueRepoMock.Setup(r => r.ObterPorIdAsync(It.IsAny<Guid>())).ReturnsAsync((Estoque?)null);
 
-            var dto = new EstoqueUpdateDTO(10, "B2");
+            var dto = new EstoqueUpdateDTO(10);
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => _service.AtualizarAsync(Guid.NewGuid(), dto));
         }
@@ -116,18 +123,17 @@ namespace Teste.Application
         public async Task AtualizarAsync_DadosValidos_AtualizaERetornaDTO()
         {
             var produtoId = Guid.NewGuid();
-            var estoque = new Estoque(produtoId, 50, 5, "A1");
+            var estoque = new Estoque(produtoId, 50, 5);
             var produto = new Produto("P001", "Notebook", 2500m);
 
             _estoqueRepoMock.Setup(r => r.ObterPorIdAsync(estoque.Id)).ReturnsAsync(estoque);
             _produtoRepoMock.Setup(r => r.ObterPorIdAsync(produtoId)).ReturnsAsync(produto);
 
-            var dto = new EstoqueUpdateDTO(20, "B2");
+            var dto = new EstoqueUpdateDTO(20);
 
             var resultado = await _service.AtualizarAsync(estoque.Id, dto);
 
             Assert.Equal(20, resultado.QuantidadeMinima);
-            Assert.Equal("B2", resultado.Localizacao);
             _uowMock.Verify(u => u.CommitAsync(), Times.Once);
         }
 

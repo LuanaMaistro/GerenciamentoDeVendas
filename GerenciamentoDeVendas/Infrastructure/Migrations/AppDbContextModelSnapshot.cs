@@ -48,10 +48,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DataUltimaAtualizacao")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Localizacao")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("ProdutoId")
                         .HasColumnType("TEXT");
 

@@ -15,10 +15,9 @@ namespace Domain.Entities
         public Guid ProdutoId { get; private set; }
         public int Quantidade { get; private set; }
         public int QuantidadeMinima { get; private set; }
-        public string? Localizacao { get; private set; }
         public DateTime DataUltimaAtualizacao { get; private set; }
 
-        public Estoque(Guid produtoId, int quantidadeInicial = 0, int quantidadeMinima = 0, string? localizacao = null)
+        public Estoque(Guid produtoId, int quantidadeInicial = 0, int quantidadeMinima = 0)
         {
             if (produtoId == Guid.Empty)
                 throw new ArgumentException("ProdutoId é obrigatório", nameof(produtoId));
@@ -33,7 +32,6 @@ namespace Domain.Entities
             ProdutoId = produtoId;
             Quantidade = quantidadeInicial;
             QuantidadeMinima = quantidadeMinima;
-            Localizacao = localizacao?.Trim();
             DataUltimaAtualizacao = DateTime.Now;
         }
 
@@ -77,10 +75,5 @@ namespace Domain.Entities
             DataUltimaAtualizacao = DateTime.Now;
         }
 
-        public void AtualizarLocalizacao(string? novaLocalizacao)
-        {
-            Localizacao = novaLocalizacao?.Trim();
-            DataUltimaAtualizacao = DateTime.Now;
-        }
     }
 }

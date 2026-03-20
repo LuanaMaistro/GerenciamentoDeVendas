@@ -11,7 +11,6 @@ namespace Application.Interfaces.Services
         Task<EstoqueDTO?> ObterPorProdutoIdAsync(Guid produtoId);
         Task<IEnumerable<EstoqueDTO>> ObterTodosAsync();
         Task<IEnumerable<EstoqueDTO>> ObterEstoqueBaixoAsync();
-        Task<IEnumerable<EstoqueDTO>> ObterPorLocalizacaoAsync(string localizacao);
         Task<EstoqueDTO> CriarAsync(EstoqueCreateDTO dto);
         Task<EstoqueDTO> AtualizarAsync(Guid id, EstoqueUpdateDTO dto);
         Task<EstoqueDTO> AdicionarQuantidadeAsync(EstoqueMovimentacaoDTO dto);
