@@ -23,37 +23,37 @@ namespace Application.Services
         public async Task<ProdutoDTO?> ObterPorIdAsync(Guid id)
         {
             var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id);
-            return produto is null ? null : MapToDTO(produto);
+            return produto is null ? null : await MapToDTOAsync(produto);
         }
 
         public async Task<ProdutoDTO?> ObterPorCodigoAsync(string codigo)
         {
             var produto = await _unitOfWork.Produtos.ObterPorCodigoAsync(codigo);
-            return produto is null ? null : MapToDTO(produto);
+            return produto is null ? null : await MapToDTOAsync(produto);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterTodosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterTodosAsync();
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterAtivosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterAtivosAsync();
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterPorCategoriaAsync(string categoria)
         {
             var produtos = await _unitOfWork.Produtos.ObterPorCategoriaAsync(categoria);
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarPorNomeAsync(string nome)
         {
             var produtos = await _unitOfWork.Produtos.BuscarPorNomeAsync(nome);
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<ProdutoDTO> CriarAsync(ProdutoCreateDTO dto)
@@ -81,7 +81,7 @@ namespace Application.Services
                 // Falha no Recombee não deve impedir o cadastro do produto
             }
 
-            return MapToDTO(produto);
+            return await MapToDTOAsync(produto);
         }
 
         public async Task<ProdutoDTO> AtualizarAsync(Guid id, ProdutoUpdateDTO dto)
