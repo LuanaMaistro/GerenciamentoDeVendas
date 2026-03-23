@@ -70,6 +70,10 @@ namespace Application.Services
             );
 
             await _unitOfWork.Produtos.AdicionarAsync(produto);
+
+            var estoque = new Estoque(produto.Id, dto.Quantidade, dto.QuantidadeMinima);
+            await _unitOfWork.Estoques.AdicionarAsync(estoque);
+
             await _unitOfWork.CommitAsync();
 
             try
@@ -95,6 +99,19 @@ namespace Application.Services
             produto.AtualizarCategoria(dto.Categoria);
 
             _unitOfWork.Produtos.Atualizar(produto);
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id);
+            if (estoque is not null)
+            {
+                estoque.AtualizarQuantidadeMinima(dto.QuantidadeMinima);
+                _unitOfWork.Estoques.Atualizar(estoque);
+            }
+            else
+            {
+                var novoEstoque = new Estoque(id, 0, dto.QuantidadeMinima);
+                await _unitOfWork.Estoques.AdicionarAsync(novoEstoque);
+            }
+
             await _unitOfWork.CommitAsync();
 
             try
@@ -106,7 +123,37 @@ namespace Application.Services
                 // Falha no Recombee não deve impedir a atualização do produto
             }
 
-            return MapToDTO(produto);
+            return await MapToDTOAsync(produto);
+        }
+
+        public async Task<ProdutoDTO> AdicionarQuantidadeAsync(Guid id, int quantidade)
+        {
+            var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id)
+                ?? throw new InvalidOperationException("Produto não encontrado");
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id)
+                ?? throw new InvalidOperationException("Estoque não encontrado para o produto");
+
+            estoque.AdicionarQuantidade(quantidade);
+            _unitOfWork.Estoques.Atualizar(estoque);
+            await _unitOfWork.CommitAsync();
+
+            return await MapToDTOAsync(produto);
+        }
+
+        public async Task<ProdutoDTO> RemoverQuantidadeAsync(Guid id, int quantidade)
+        {
+            var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id)
+                ?? throw new InvalidOperationException("Produto não encontrado");
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id)
+                ?? throw new InvalidOperationException("Estoque não encontrado para o produto");
+
+            estoque.RemoverQuantidade(quantidade);
+            _unitOfWork.Estoques.Atualizar(estoque);
+            await _unitOfWork.CommitAsync();
+
+            return await MapToDTOAsync(produto);
         }
 
         public async Task AtivarAsync(Guid id)
