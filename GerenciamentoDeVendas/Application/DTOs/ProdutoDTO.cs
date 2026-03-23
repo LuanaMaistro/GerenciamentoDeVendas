@@ -10,7 +10,9 @@ namespace Application.DTOs
         decimal PrecoUnitario,
         string? Categoria,
         bool Ativo,
-        DateTime DataCadastro
+        DateTime DataCadastro,
+        int Quantidade,
+        int QuantidadeMinima
     );
 
     public record ProdutoCreateDTO(
@@ -18,13 +20,17 @@ namespace Application.DTOs
         string Nome,
         decimal PrecoUnitario,
         string? Descricao,
-        string? Categoria
+        string? Categoria,
+        int Quantidade,
+        int QuantidadeMinima
     );
 
     public record ProdutoUpdateDTO(
         string Nome,
         string? Descricao,
         decimal PrecoUnitario,
-        string? Categoria
+        string? Categoria,
+        int QuantidadeMinima
     );
+
 }

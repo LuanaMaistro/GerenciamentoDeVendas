@@ -139,8 +139,10 @@ namespace Application.Services
             return await _unitOfWork.Produtos.CodigoJaCadastradoAsync(codigo);
         }
 
-        private static ProdutoDTO MapToDTO(Produto produto)
+        private async Task<ProdutoDTO> MapToDTOAsync(Produto produto)
         {
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(produto.Id);
+
             return new ProdutoDTO(
                 produto.Id,
                 produto.Codigo,
@@ -149,7 +151,9 @@ namespace Application.Services
                 produto.PrecoUnitario,
                 produto.Categoria,
                 produto.Ativo,
-                produto.DataCadastro
+                produto.DataCadastro,
+                estoque?.Quantidade ?? 0,
+                estoque?.QuantidadeMinima ?? 0
             );
         }
     }
