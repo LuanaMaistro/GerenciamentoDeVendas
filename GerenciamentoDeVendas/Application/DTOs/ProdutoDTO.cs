@@ -33,4 +33,5 @@ namespace Application.DTOs
         int QuantidadeMinima
     );
 
+    public record ProdutoEstoqueMovimentacaoDTO(int Quantidade);
 }
