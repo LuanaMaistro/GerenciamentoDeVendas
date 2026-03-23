@@ -105,6 +105,42 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("{id:guid}/estoque/adicionar")]
+        public async Task<ActionResult<ProdutoDTO>> AdicionarQuantidade(Guid id, [FromBody] ProdutoEstoqueMovimentacaoDTO dto)
+        {
+            try
+            {
+                var produto = await _produtoService.AdicionarQuantidadeAsync(id, dto.Quantidade);
+                return Ok(produto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPatch("{id:guid}/estoque/remover")]
+        public async Task<ActionResult<ProdutoDTO>> RemoverQuantidade(Guid id, [FromBody] ProdutoEstoqueMovimentacaoDTO dto)
+        {
+            try
+            {
+                var produto = await _produtoService.RemoverQuantidadeAsync(id, dto.Quantidade);
+                return Ok(produto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPatch("{id:guid}/ativar")]
         public async Task<ActionResult> Ativar(Guid id)
         {
