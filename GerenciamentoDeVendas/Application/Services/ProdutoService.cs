@@ -23,37 +23,37 @@ namespace Application.Services
         public async Task<ProdutoDTO?> ObterPorIdAsync(Guid id)
         {
             var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id);
-            return produto is null ? null : MapToDTO(produto);
+            return produto is null ? null : await MapToDTOAsync(produto);
         }
 
         public async Task<ProdutoDTO?> ObterPorCodigoAsync(string codigo)
         {
             var produto = await _unitOfWork.Produtos.ObterPorCodigoAsync(codigo);
-            return produto is null ? null : MapToDTO(produto);
+            return produto is null ? null : await MapToDTOAsync(produto);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterTodosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterTodosAsync();
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterAtivosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterAtivosAsync();
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterPorCategoriaAsync(string categoria)
         {
             var produtos = await _unitOfWork.Produtos.ObterPorCategoriaAsync(categoria);
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarPorNomeAsync(string nome)
         {
             var produtos = await _unitOfWork.Produtos.BuscarPorNomeAsync(nome);
-            return produtos.Select(MapToDTO);
+            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
         }
 
         public async Task<ProdutoDTO> CriarAsync(ProdutoCreateDTO dto)
@@ -70,6 +70,10 @@ namespace Application.Services
             );
 
             await _unitOfWork.Produtos.AdicionarAsync(produto);
+
+            var estoque = new Estoque(produto.Id, dto.Quantidade, dto.QuantidadeMinima);
+            await _unitOfWork.Estoques.AdicionarAsync(estoque);
+
             await _unitOfWork.CommitAsync();
 
             try
@@ -81,7 +85,7 @@ namespace Application.Services
                 // Falha no Recombee não deve impedir o cadastro do produto
             }
 
-            return MapToDTO(produto);
+            return await MapToDTOAsync(produto);
         }
 
         public async Task<ProdutoDTO> AtualizarAsync(Guid id, ProdutoUpdateDTO dto)
@@ -95,6 +99,19 @@ namespace Application.Services
             produto.AtualizarCategoria(dto.Categoria);
 
             _unitOfWork.Produtos.Atualizar(produto);
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id);
+            if (estoque is not null)
+            {
+                estoque.AtualizarQuantidadeMinima(dto.QuantidadeMinima);
+                _unitOfWork.Estoques.Atualizar(estoque);
+            }
+            else
+            {
+                var novoEstoque = new Estoque(id, 0, dto.QuantidadeMinima);
+                await _unitOfWork.Estoques.AdicionarAsync(novoEstoque);
+            }
+
             await _unitOfWork.CommitAsync();
 
             try
@@ -106,7 +123,37 @@ namespace Application.Services
                 // Falha no Recombee não deve impedir a atualização do produto
             }
 
-            return MapToDTO(produto);
+            return await MapToDTOAsync(produto);
+        }
+
+        public async Task<ProdutoDTO> AdicionarQuantidadeAsync(Guid id, int quantidade)
+        {
+            var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id)
+                ?? throw new InvalidOperationException("Produto não encontrado");
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id)
+                ?? throw new InvalidOperationException("Estoque não encontrado para o produto");
+
+            estoque.AdicionarQuantidade(quantidade);
+            _unitOfWork.Estoques.Atualizar(estoque);
+            await _unitOfWork.CommitAsync();
+
+            return await MapToDTOAsync(produto);
+        }
+
+        public async Task<ProdutoDTO> RemoverQuantidadeAsync(Guid id, int quantidade)
+        {
+            var produto = await _unitOfWork.Produtos.ObterPorIdAsync(id)
+                ?? throw new InvalidOperationException("Produto não encontrado");
+
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(id)
+                ?? throw new InvalidOperationException("Estoque não encontrado para o produto");
+
+            estoque.RemoverQuantidade(quantidade);
+            _unitOfWork.Estoques.Atualizar(estoque);
+            await _unitOfWork.CommitAsync();
+
+            return await MapToDTOAsync(produto);
         }
 
         public async Task AtivarAsync(Guid id)
@@ -139,8 +186,10 @@ namespace Application.Services
             return await _unitOfWork.Produtos.CodigoJaCadastradoAsync(codigo);
         }
 
-        private static ProdutoDTO MapToDTO(Produto produto)
+        private async Task<ProdutoDTO> MapToDTOAsync(Produto produto)
         {
+            var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(produto.Id);
+
             return new ProdutoDTO(
                 produto.Id,
                 produto.Codigo,
@@ -149,7 +198,9 @@ namespace Application.Services
                 produto.PrecoUnitario,
                 produto.Categoria,
                 produto.Ativo,
-                produto.DataCadastro
+                produto.DataCadastro,
+                estoque?.Quantidade ?? 0,
+                estoque?.QuantidadeMinima ?? 0
             );
         }
     }
