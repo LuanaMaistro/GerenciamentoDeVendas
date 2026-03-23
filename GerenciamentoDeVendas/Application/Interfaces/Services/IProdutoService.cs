@@ -15,6 +15,8 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<ProdutoDTO>> BuscarPorNomeAsync(string nome);
         Task<ProdutoDTO> CriarAsync(ProdutoCreateDTO dto);
         Task<ProdutoDTO> AtualizarAsync(Guid id, ProdutoUpdateDTO dto);
+        Task<ProdutoDTO> AdicionarQuantidadeAsync(Guid id, int quantidade);
+        Task<ProdutoDTO> RemoverQuantidadeAsync(Guid id, int quantidade);
         Task AtivarAsync(Guid id);
         Task InativarAsync(Guid id);
         Task<bool> ExisteAsync(Guid id);
