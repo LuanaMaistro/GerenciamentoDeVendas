@@ -8,8 +8,6 @@ namespace API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    // TODO: remover [AllowAnonymous]
-    [AllowAnonymous]
     public class VendasController : ControllerBase
     {
         private readonly IVendaService _vendaService;
