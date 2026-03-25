@@ -12,7 +12,9 @@ namespace Application.DTOs
         bool Ativo,
         DateTime DataCadastro,
         int Quantidade,
-        int QuantidadeMinima
+        int QuantidadeMinima,
+        int NivelEstoque,
+        string CorEstoque
     );
 
     public record ProdutoCreateDTO(

@@ -24,4 +24,16 @@ namespace Application.DTOs
         Guid ClienteId,
         Guid ProdutoId
     );
+
+    public record RecomendacaoDiagnosticoItemDTO(
+        string IdRecombee,
+        bool ExisteNoBanco
+    );
+
+    public record RecomendacaoDiagnosticoDTO(
+        Guid ClienteId,
+        int TotalRetornadoRecombee,
+        int TotalEncontradoNoBanco,
+        IEnumerable<RecomendacaoDiagnosticoItemDTO> Itens
+    );
 }

@@ -190,6 +190,10 @@ namespace Application.Services
         {
             var estoque = await _unitOfWork.Estoques.ObterPorProdutoIdAsync(produto.Id);
 
+            var quantidade = estoque?.Quantidade ?? 0;
+            var quantidadeMinima = estoque?.QuantidadeMinima ?? 0;
+            var (nivelEstoque, corEstoque) = CalcularNivelEstoque(quantidade, quantidadeMinima);
+
             return new ProdutoDTO(
                 produto.Id,
                 produto.Codigo,
@@ -199,9 +203,29 @@ namespace Application.Services
                 produto.Categoria,
                 produto.Ativo,
                 produto.DataCadastro,
-                estoque?.Quantidade ?? 0,
-                estoque?.QuantidadeMinima ?? 0
+                quantidade,
+                quantidadeMinima,
+                nivelEstoque,
+                corEstoque
             );
+        }
+
+        private static (int nivel, string cor) CalcularNivelEstoque(int quantidade, int quantidadeMinima)
+        {
+            if (quantidadeMinima <= 0)
+                return (0, "#4CAF50");
+
+            double ratio = (double)quantidade / quantidadeMinima;
+
+            return ratio switch
+            {
+                >= 3.0 => (0, "#4CAF50"),  // verde
+                >= 2.0 => (1, "#8BC34A"),  // verde-claro
+                >= 1.5 => (2, "#CDDC39"),  // amarelo-verde
+                >= 1.2 => (3, "#FFC107"),  // amarelo
+                >= 1.0 => (4, "#FF9800"),  // laranja
+                _      => (5, "#F44336"),  // vermelho
+            };
         }
     }
 }
