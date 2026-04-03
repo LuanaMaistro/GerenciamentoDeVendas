@@ -13,6 +13,8 @@ using Recombee.ApiClient;
 using Recombee.ApiClient.Util;
 using System.Text;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 AppDomain.CurrentDomain.UnhandledException += (_, e) =>
 {
     Console.Error.WriteLine("=== UNHANDLED IN THREAD ===");
@@ -113,6 +115,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // ─── Database (PostgreSQL) ───────────────────────────────────────────────────
 var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")!;
+Console.Error.WriteLine("=== CONN START: " + (rawConn?.Length > 20 ? rawConn[..20] : rawConn) + " ===");
 if (rawConn.StartsWith("postgresql://") || rawConn.StartsWith("postgres://"))
 {
     var uri = new Uri(rawConn);
