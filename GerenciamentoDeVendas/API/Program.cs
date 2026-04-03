@@ -13,7 +13,18 @@ using Recombee.ApiClient;
 using Recombee.ApiClient.Util;
 using System.Text;
 
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    Console.Error.WriteLine("=== UNHANDLED IN THREAD ===");
+    Console.Error.WriteLine("Terminating: " + e.IsTerminating);
+    Console.Error.WriteLine("Type: " + e.ExceptionObject?.GetType()?.FullName);
+    Console.Error.Flush();
+};
+
 var builder = WebApplication.CreateBuilder(args);
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // ─── Controllers ──────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
