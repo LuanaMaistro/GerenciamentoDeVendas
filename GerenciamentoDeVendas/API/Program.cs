@@ -15,17 +15,6 @@ using System.Text;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-AppDomain.CurrentDomain.UnhandledException += (_, e) =>
-{
-    Console.Error.WriteLine("=== UNHANDLED IN THREAD ===");
-    Console.Error.WriteLine("Terminating: " + e.IsTerminating);
-    Console.Error.WriteLine("Type: " + e.ExceptionObject?.GetType()?.FullName);
-    if (e.ExceptionObject is System.IO.FileNotFoundException fnf)
-        Console.Error.WriteLine("FileName: " + fnf.FileName);
-    if (e.ExceptionObject is Exception ex)
-        Console.Error.WriteLine("Source: " + ex.Source);
-    Console.Error.Flush();
-};
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -115,7 +104,6 @@ builder.Services.AddSwaggerGen(c =>
 
 // ─── Database (PostgreSQL) ───────────────────────────────────────────────────
 var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")!;
-Console.Error.WriteLine("=== CONN START: " + (rawConn?.Length > 20 ? rawConn[..20] : rawConn) + " ===");
 if (rawConn.StartsWith("postgresql://") || rawConn.StartsWith("postgres://"))
 {
     var uri = new Uri(rawConn);
@@ -188,17 +176,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-try
-{
-    app.Run();
-}
-catch (Exception ex)
-{
-    Console.Error.WriteLine("=== FATAL CRASH ===");
-    Console.Error.WriteLine("Type: " + ex.GetType().FullName);
-    Console.Error.WriteLine("Message: " + ex.Message);
-    Console.Error.WriteLine("Source: " + ex.Source);
-    if (ex.InnerException != null)
-        Console.Error.WriteLine("Inner: " + ex.InnerException.GetType().FullName + " - " + ex.InnerException.Message);
-    Environment.Exit(1);
-}
+app.Run();
