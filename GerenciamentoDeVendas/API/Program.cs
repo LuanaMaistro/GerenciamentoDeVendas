@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins("http://localhost:5173", "https://nexsell.up.railway.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -158,14 +158,11 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gerenciamento de Vendas API v1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gerenciamento de Vendas API v1");
+});
 
 app.UseCors("AllowFrontend");
 
