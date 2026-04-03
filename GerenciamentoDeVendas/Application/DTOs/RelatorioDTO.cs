@@ -3,11 +3,21 @@ using System.Collections.Generic;
 
 namespace Application.DTOs
 {
-    public record RelatorioVendasResumoDTO(
+    public record TotalPedidosDTO(
         DateTime DataInicio,
         DateTime DataFim,
-        int TotalPedidos,
-        decimal ValorTotal,
+        int TotalPedidos
+    );
+
+    public record ValorTotalVendasDTO(
+        DateTime DataInicio,
+        DateTime DataFim,
+        decimal ValorTotal
+    );
+
+    public record TicketMedioDTO(
+        DateTime DataInicio,
+        DateTime DataFim,
         decimal TicketMedio
     );
 

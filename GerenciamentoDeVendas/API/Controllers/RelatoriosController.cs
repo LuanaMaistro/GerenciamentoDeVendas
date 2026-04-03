@@ -17,16 +17,40 @@ namespace API.Controllers
             _relatorioService = relatorioService;
         }
 
-        [HttpGet("vendas/resumo")]
-        public async Task<ActionResult<RelatorioVendasResumoDTO>> ObterResumoVendas(
+        [HttpGet("vendas/total-pedidos")]
+        public async Task<ActionResult<TotalPedidosDTO>> ObterTotalPedidos(
             [FromQuery] DateTime dataInicio,
             [FromQuery] DateTime dataFim)
         {
             if (dataFim < dataInicio)
                 return BadRequest(new { message = "dataFim deve ser maior ou igual a dataInicio" });
 
-            var resumo = await _relatorioService.ObterResumoVendasAsync(dataInicio, dataFim);
-            return Ok(resumo);
+            var resultado = await _relatorioService.ObterTotalPedidosAsync(dataInicio, dataFim);
+            return Ok(resultado);
+        }
+
+        [HttpGet("vendas/valor-total")]
+        public async Task<ActionResult<ValorTotalVendasDTO>> ObterValorTotal(
+            [FromQuery] DateTime dataInicio,
+            [FromQuery] DateTime dataFim)
+        {
+            if (dataFim < dataInicio)
+                return BadRequest(new { message = "dataFim deve ser maior ou igual a dataInicio" });
+
+            var resultado = await _relatorioService.ObterValorTotalAsync(dataInicio, dataFim);
+            return Ok(resultado);
+        }
+
+        [HttpGet("vendas/ticket-medio")]
+        public async Task<ActionResult<TicketMedioDTO>> ObterTicketMedio(
+            [FromQuery] DateTime dataInicio,
+            [FromQuery] DateTime dataFim)
+        {
+            if (dataFim < dataInicio)
+                return BadRequest(new { message = "dataFim deve ser maior ou igual a dataInicio" });
+
+            var resultado = await _relatorioService.ObterTicketMedioAsync(dataInicio, dataFim);
+            return Ok(resultado);
         }
 
         [HttpGet("vendas/por-produto")]

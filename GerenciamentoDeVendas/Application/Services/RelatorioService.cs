@@ -18,16 +18,26 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<RelatorioVendasResumoDTO> ObterResumoVendasAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<TotalPedidosDTO> ObterTotalPedidosAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            var vendas = await _unitOfWork.Vendas.ObterPorPeriodoAsync(dataInicio, dataFim);
+            var qtd = vendas.Count(v => v.Status == StatusVenda.Confirmada);
+            return new TotalPedidosDTO(dataInicio, dataFim, qtd);
+        }
+
+        public async Task<ValorTotalVendasDTO> ObterValorTotalAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            var vendas = await _unitOfWork.Vendas.ObterPorPeriodoAsync(dataInicio, dataFim);
+            var total = vendas.Where(v => v.Status == StatusVenda.Confirmada).Sum(v => v.ValorTotal);
+            return new ValorTotalVendasDTO(dataInicio, dataFim, total);
+        }
+
+        public async Task<TicketMedioDTO> ObterTicketMedioAsync(DateTime dataInicio, DateTime dataFim)
         {
             var vendas = await _unitOfWork.Vendas.ObterPorPeriodoAsync(dataInicio, dataFim);
             var confirmadas = vendas.Where(v => v.Status == StatusVenda.Confirmada).ToList();
-
-            var total = confirmadas.Sum(v => v.ValorTotal);
-            var qtd = confirmadas.Count;
-            var ticketMedio = qtd > 0 ? total / qtd : 0;
-
-            return new RelatorioVendasResumoDTO(dataInicio, dataFim, qtd, total, ticketMedio);
+            var ticketMedio = confirmadas.Count > 0 ? Math.Round(confirmadas.Sum(v => v.ValorTotal) / confirmadas.Count, 2) : 0;
+            return new TicketMedioDTO(dataInicio, dataFim, ticketMedio);
         }
 
         public async Task<IEnumerable<ProdutoMaisVendidoDTO>> ObterProdutosMaisVendidosAsync(DateTime dataInicio, DateTime dataFim, int top = 10)

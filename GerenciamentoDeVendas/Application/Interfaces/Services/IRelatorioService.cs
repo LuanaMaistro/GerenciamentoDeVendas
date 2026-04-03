@@ -7,7 +7,9 @@ namespace Application.Interfaces.Services
 {
     public interface IRelatorioService
     {
-        Task<RelatorioVendasResumoDTO> ObterResumoVendasAsync(DateTime dataInicio, DateTime dataFim);
+        Task<TotalPedidosDTO> ObterTotalPedidosAsync(DateTime dataInicio, DateTime dataFim);
+        Task<ValorTotalVendasDTO> ObterValorTotalAsync(DateTime dataInicio, DateTime dataFim);
+        Task<TicketMedioDTO> ObterTicketMedioAsync(DateTime dataInicio, DateTime dataFim);
         Task<IEnumerable<ProdutoMaisVendidoDTO>> ObterProdutosMaisVendidosAsync(DateTime dataInicio, DateTime dataFim, int top = 10);
         Task<IEnumerable<ClienteCompradorDTO>> ObterClientesQueMoreCompraramAsync(DateTime dataInicio, DateTime dataFim, int top = 10);
         Task<RelatorioEstoqueDTO> ObterRelatorioEstoqueAsync();
