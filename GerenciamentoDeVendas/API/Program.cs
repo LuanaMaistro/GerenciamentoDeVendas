@@ -111,9 +111,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// ─── Database (SQLite) ────────────────────────────────────────────────────────
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// ─── Database (PostgreSQL) ───────────────────────────────────────────────────
+var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")!;
+if (rawConn.StartsWith("postgresql://") || rawConn.StartsWith("postgres://"))
+{
+    var uri = new Uri(rawConn);
+    var userInfo = uri.UserInfo.Split(':');
+    rawConn = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Prefer;Trust Server Certificate=true";
+}
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(rawConn));
 
 // ─── Infrastructure ───────────────────────────────────────────────────────────
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
