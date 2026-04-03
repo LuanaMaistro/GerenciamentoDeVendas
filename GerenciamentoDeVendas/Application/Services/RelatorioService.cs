@@ -78,6 +78,36 @@ namespace Application.Services
             return resultado;
         }
 
+        public async Task<IEnumerable<CategoriaMaisVendidaDTO>> ObterCategoriasMaisVendidasAsync(DateTime dataInicio, DateTime dataFim, int top = 10)
+        {
+            var vendas = await _unitOfWork.Vendas.ObterPorPeriodoAsync(dataInicio, dataFim);
+            var confirmadas = vendas.Where(v => v.Status == StatusVenda.Confirmada).ToList();
+
+            var produtoIds = confirmadas
+                .SelectMany(v => v.Itens)
+                .Select(i => i.ProdutoId)
+                .Distinct()
+                .ToHashSet();
+
+            var produtos = await _unitOfWork.Produtos.ObterTodosAsync();
+            var categoriaPorProduto = produtos
+                .Where(p => produtoIds.Contains(p.Id))
+                .ToDictionary(p => p.Id, p => p.Categoria ?? "Sem categoria");
+
+            var resultado = confirmadas
+                .SelectMany(v => v.Itens)
+                .GroupBy(i => categoriaPorProduto.GetValueOrDefault(i.ProdutoId, "Sem categoria"))
+                .Select(g => new CategoriaMaisVendidaDTO(
+                    g.Key,
+                    g.Sum(i => i.Quantidade),
+                    g.Sum(i => i.Subtotal)
+                ))
+                .OrderByDescending(c => c.QuantidadeVendida)
+                .Take(top);
+
+            return resultado;
+        }
+
         public async Task<RelatorioEstoqueDTO> ObterRelatorioEstoqueAsync()
         {
             var estoques = await _unitOfWork.Estoques.ObterTodosAsync();
