@@ -68,12 +68,10 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title       = "Gerenciamento de Vendas API",
+        Title       = "NexSell API",
         Version     = "v1",
         Description = "API para gerenciamento de vendas e estoque"
     });
-
-    c.AddServer(new OpenApiServer { Url = "http://localhost:5001", Description = "Servidor Local" });
 
     // Definição do esquema de segurança JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
