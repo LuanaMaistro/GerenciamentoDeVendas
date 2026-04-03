@@ -80,7 +80,7 @@ namespace API.Controllers
                 }
                 catch
                 {
-                    resultado.Add(new ClienteRecomendacoesDTO(cliente, []));
+                    resultado.Add(new ClienteRecomendacoesDTO(cliente, Enumerable.Empty<RecomendacaoItemDTO>()));
                 }
             }
 
