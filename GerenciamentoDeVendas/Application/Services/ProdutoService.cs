@@ -35,25 +35,33 @@ namespace Application.Services
         public async Task<IEnumerable<ProdutoDTO>> ObterTodosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterTodosAsync();
-            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
+            return await MapListAsync(produtos);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterAtivosAsync()
         {
             var produtos = await _unitOfWork.Produtos.ObterAtivosAsync();
-            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
+            return await MapListAsync(produtos);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> ObterPorCategoriaAsync(string categoria)
         {
             var produtos = await _unitOfWork.Produtos.ObterPorCategoriaAsync(categoria);
-            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
+            return await MapListAsync(produtos);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarPorNomeAsync(string nome)
         {
             var produtos = await _unitOfWork.Produtos.BuscarPorNomeAsync(nome);
-            return await Task.WhenAll(produtos.Select(MapToDTOAsync));
+            return await MapListAsync(produtos);
+        }
+
+        private async Task<IEnumerable<ProdutoDTO>> MapListAsync(IEnumerable<Produto> produtos)
+        {
+            var result = new List<ProdutoDTO>();
+            foreach (var p in produtos)
+                result.Add(await MapToDTOAsync(p));
+            return result;
         }
 
         public async Task<ProdutoDTO> CriarAsync(ProdutoCreateDTO dto)
