@@ -1,8 +1,5 @@
 [build]
 builder = "nixpacks"
-buildCommand = "dotnet publish API/API.csproj -c Release -o out"
 
 [deploy]
 startCommand = "dotnet out/API.dll"
-restartPolicyType = "on-failure"
-restartPolicyMaxRetries = 3
