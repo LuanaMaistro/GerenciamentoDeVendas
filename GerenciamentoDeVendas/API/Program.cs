@@ -18,6 +18,10 @@ AppDomain.CurrentDomain.UnhandledException += (_, e) =>
     Console.Error.WriteLine("=== UNHANDLED IN THREAD ===");
     Console.Error.WriteLine("Terminating: " + e.IsTerminating);
     Console.Error.WriteLine("Type: " + e.ExceptionObject?.GetType()?.FullName);
+    if (e.ExceptionObject is System.IO.FileNotFoundException fnf)
+        Console.Error.WriteLine("FileName: " + fnf.FileName);
+    if (e.ExceptionObject is Exception ex)
+        Console.Error.WriteLine("Source: " + ex.Source);
     Console.Error.Flush();
 };
 
