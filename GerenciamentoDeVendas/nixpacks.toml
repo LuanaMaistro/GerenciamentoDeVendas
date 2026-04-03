@@ -1,11 +1,8 @@
-[phases.setup]
-nixPkgs = ["dotnet-sdk_8"]
-
 [phases.install]
-cmds = ["dotnet restore API/API.csproj -r linux-x64"]
+cmds = ["dotnet restore API/API.csproj"]
 
 [phases.build]
-cmds = ["dotnet publish API/API.csproj -c Release -o out -r linux-x64 --self-contained true"]
+cmds = ["dotnet publish API/API.csproj -c Release -o out"]
 
 [start]
-cmd = "./out/API"
+cmd = "dotnet out/API.dll"
