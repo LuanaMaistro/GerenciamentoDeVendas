@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173", "https://nexsell.up.railway.app")
+            .WithOrigins("http://localhost:5173", "https://nexsell.up.railway.app", "https://sistema-vendas-frontend-orcin.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
