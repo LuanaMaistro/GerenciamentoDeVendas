@@ -38,4 +38,10 @@ namespace Application.DTOs
         int ProdutosAbaixoDoMinimo,
         IEnumerable<RelatorioEstoqueItemDTO> Itens
     );
+
+    public record CategoriaMaisVendidaDTO(
+        string Categoria,
+        int QuantidadeVendida,
+        decimal ValorTotal
+    );
 }

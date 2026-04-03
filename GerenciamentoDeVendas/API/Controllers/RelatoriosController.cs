@@ -61,6 +61,22 @@ namespace API.Controllers
             return Ok(clientes);
         }
 
+        [HttpGet("vendas/por-categoria")]
+        public async Task<ActionResult<IEnumerable<CategoriaMaisVendidaDTO>>> ObterCategoriasMaisVendidas(
+            [FromQuery] DateTime dataInicio,
+            [FromQuery] DateTime dataFim,
+            [FromQuery] int top = 10)
+        {
+            if (dataFim < dataInicio)
+                return BadRequest(new { message = "dataFim deve ser maior ou igual a dataInicio" });
+
+            if (top <= 0 || top > 100)
+                return BadRequest(new { message = "top deve estar entre 1 e 100" });
+
+            var categorias = await _relatorioService.ObterCategoriasMaisVendidasAsync(dataInicio, dataFim, top);
+            return Ok(categorias);
+        }
+
         [HttpGet("estoque")]
         public async Task<ActionResult<RelatorioEstoqueDTO>> ObterRelatorioEstoque()
         {

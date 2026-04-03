@@ -11,5 +11,6 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<ProdutoMaisVendidoDTO>> ObterProdutosMaisVendidosAsync(DateTime dataInicio, DateTime dataFim, int top = 10);
         Task<IEnumerable<ClienteCompradorDTO>> ObterClientesQueMoreCompraramAsync(DateTime dataInicio, DateTime dataFim, int top = 10);
         Task<RelatorioEstoqueDTO> ObterRelatorioEstoqueAsync();
+        Task<IEnumerable<CategoriaMaisVendidaDTO>> ObterCategoriasMaisVendidasAsync(DateTime dataInicio, DateTime dataFim, int top = 10);
     }
 }
