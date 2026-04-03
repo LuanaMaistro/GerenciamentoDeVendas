@@ -164,4 +164,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.Error.WriteLine("=== FATAL CRASH ===");
+    Console.Error.WriteLine("Type: " + ex.GetType().FullName);
+    Console.Error.WriteLine("Message: " + ex.Message);
+    Console.Error.WriteLine("Source: " + ex.Source);
+    if (ex.InnerException != null)
+        Console.Error.WriteLine("Inner: " + ex.InnerException.GetType().FullName + " - " + ex.InnerException.Message);
+    Environment.Exit(1);
+}
