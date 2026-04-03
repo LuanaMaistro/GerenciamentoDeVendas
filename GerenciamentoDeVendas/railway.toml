@@ -1,5 +1,6 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "dotnet out/API.dll"
+startCommand = "dotnet API.dll"
