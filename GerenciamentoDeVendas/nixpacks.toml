@@ -1,0 +1,8 @@
+[phases.install]
+cmds = ["dotnet restore API/API.csproj"]
+
+[phases.build]
+cmds = ["dotnet publish API/API.csproj -c Release -o out"]
+
+[start]
+cmd = "dotnet out/API.dll"
