@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Produto>> BuscarPorNomeAsync(string nome)
         {
             return await _dbSet
-                .Where(p => p.Nome.Contains(nome))
+                .Where(p => EF.Functions.ILike(p.Nome, $"%{nome}%"))
                 .ToListAsync();
         }
 
