@@ -25,5 +25,6 @@ namespace Application.Interfaces.Services
         /// Retorna os N produtos recomendados para um cliente com base no histórico.
         /// </summary>
         Task<RecomendacaoResultadoDTO> ObterRecomendacoesAsync(Guid clienteId, int quantidade = 5);
+
     }
 }
