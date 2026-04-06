@@ -88,21 +88,23 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Registra que um cliente visualizou um produto.
-        /// Alimenta o algoritmo de recomendação com dados de comportamento.
+        /// Diagnóstico: mostra o que o Recombee retornou e quais IDs existem no banco local.
         /// </summary>
-        [HttpPost("eventos/visualizacao")]
-        public async Task<ActionResult> RegistrarVisualizacao([FromBody] VisualizacaoEventoDTO dto)
+        [HttpGet("cliente/{clienteId:guid}/diagnostico")]
+        public async Task<ActionResult<RecomendacaoDiagnosticoDTO>> Diagnosticar(
+            Guid clienteId,
+            [FromQuery] int quantidade = 5)
         {
             try
             {
-                await _recomendacaoService.RegistrarVisualizacaoAsync(dto.ClienteId, dto.ProdutoId);
-                return NoContent();
+                var resultado = await _recomendacaoService.DiagnosticarAsync(clienteId, quantidade);
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
         }
+
     }
 }
