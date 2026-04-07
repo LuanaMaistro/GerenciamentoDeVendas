@@ -68,7 +68,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title       = "NexSell API",
+        Title       = "Nexsell API",
         Version     = "v1",
         Description = "API para gerenciamento de vendas e estoque"
     });
