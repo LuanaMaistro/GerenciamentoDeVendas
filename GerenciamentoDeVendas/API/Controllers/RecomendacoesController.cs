@@ -87,24 +87,6 @@ namespace API.Controllers
             return Ok(resultado);
         }
 
-        /// <summary>
-        /// Diagnóstico: mostra o que o Recombee retornou e quais IDs existem no banco local.
-        /// </summary>
-        [HttpGet("cliente/{clienteId:guid}/diagnostico")]
-        public async Task<ActionResult<RecomendacaoDiagnosticoDTO>> Diagnosticar(
-            Guid clienteId,
-            [FromQuery] int quantidade = 5)
-        {
-            try
-            {
-                var resultado = await _recomendacaoService.DiagnosticarAsync(clienteId, quantidade);
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
 
     }
 }
