@@ -12,6 +12,9 @@ namespace Infrastructure.Data.Configurations
 
             builder.HasKey(v => v.Id);
 
+            builder.Property(v => v.Numero)
+                .ValueGeneratedOnAdd();
+
             builder.Property(v => v.ClienteId)
                 .IsRequired();
 

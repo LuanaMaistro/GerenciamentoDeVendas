@@ -219,6 +219,7 @@ namespace Application.Services
         {
             return new VendaDTO(
                 venda.Id,
+                venda.Numero,
                 venda.ClienteId,
                 clienteNome,
                 venda.DataVenda,

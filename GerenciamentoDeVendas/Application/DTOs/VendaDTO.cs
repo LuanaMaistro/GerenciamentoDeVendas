@@ -5,6 +5,7 @@ namespace Application.DTOs
 {
     public record VendaDTO(
         Guid Id,
+        int Numero,
         Guid ClienteId,
         string? ClienteNome,
         DateTime DataVenda,

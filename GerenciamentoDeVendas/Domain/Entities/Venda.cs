@@ -32,6 +32,7 @@ namespace Domain.Entities
         }
 
         public Guid Id { get; private set; }
+        public int Numero { get; private set; }
         public Guid ClienteId { get; private set; }
         public DateTime DataVenda { get; private set; }
         public List<ItemVenda> Itens { get; private set; }
