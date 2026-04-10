@@ -1,5 +1,11 @@
-$base = "http://localhost:5001/api"
-$headers = @{ "Content-Type" = "application/json" }
+$base = "https://nexsell.up.railway.app/api"
+
+$loginBody = @{ email = "admin@sistema.com"; senha = "Admin@123" } | ConvertTo-Json
+$resLogin = Invoke-RestMethod -Uri "$base/auth/login" -Method POST -Body $loginBody -ContentType "application/json"
+$token = $resLogin.token
+Write-Host "Login OK" -ForegroundColor Green
+
+$headers = @{ "Content-Type" = "application/json"; "Authorization" = "Bearer $token" }
 
 function Invoke-Post($url, $body) {
     Invoke-RestMethod -Uri $url -Method POST -Headers $headers -Body ($body | ConvertTo-Json -Depth 5)
